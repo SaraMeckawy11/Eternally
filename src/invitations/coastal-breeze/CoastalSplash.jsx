@@ -176,7 +176,6 @@ export default function CoastalSplash({ onDismiss }) {
         >
           <span className="coastal-splash-eyebrow">You are invited to</span>
           <p className="coastal-splash-script">the wedding</p>
-          <span className="coastal-splash-hint">Opening the doors</span>
         </motion.div>
       </motion.div>
     </AnimatePresence>

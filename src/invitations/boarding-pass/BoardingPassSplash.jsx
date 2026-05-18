@@ -197,17 +197,6 @@ export default function BoardingPassSplash({ onDismiss }) {
           </motion.div>
         )}
 
-        {/* Auto-open status - bottom center */}
-        {!dismissed && (
-          <motion.p
-            className="inv-splash-status"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.2, 0.8, 0.2] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-          >
-            opening your invitation
-          </motion.p>
-        )}
       </motion.div>
     </AnimatePresence>
   );

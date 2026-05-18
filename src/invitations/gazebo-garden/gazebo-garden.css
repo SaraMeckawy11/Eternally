@@ -326,39 +326,6 @@
   animation-delay: 0.22s;
 }
 
-.gazebo-splash-copy {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 2rem;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  padding-inline: 1.25rem;
-  text-align: center;
-}
-
-.gazebo-splash-copy,
-.gazebo-splash-copy > div {
-  pointer-events: none;
-}
-
-.gazebo-splash-copy strong {
-  display: block;
-  margin-top: 0;
-  border: 1px solid rgba(199, 163, 91, 0.45);
-  border-radius: 999px;
-  background: rgba(255, 249, 232, 0.72);
-  box-shadow: 0 16px 42px rgba(122, 108, 58, 0.16);
-  color: #8b6a2e;
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.28em;
-  padding: 0.85rem 1.35rem;
-  text-transform: uppercase;
-  backdrop-filter: blur(12px);
-}
-
 .gazebo-hero {
   position: relative;
   display: flex;

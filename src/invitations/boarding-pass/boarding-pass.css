@@ -135,22 +135,6 @@
   margin: 0;
 }
 
-/* Auto-open status */
-.inv-splash-status {
-  position: absolute;
-  bottom: 40px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: 'Courier Prime', monospace;
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.4em;
-  color: rgba(201, 169, 110, 0.35);
-  z-index: 10;
-  margin: 0;
-}
-
 @keyframes inv-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
 /* --- Page --- */

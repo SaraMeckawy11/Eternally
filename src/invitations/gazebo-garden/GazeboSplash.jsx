@@ -228,16 +228,6 @@ export default function GazeboSplash({ onDismiss }) {
         <div className="gazebo-splash-beige-texture" aria-hidden />
         <div className="gazebo-splash-overlay" aria-hidden />
 
-        <motion.div
-          className="gazebo-splash-copy"
-          initial={{ opacity: 0, y: 18 }}
-          animate={opening ? { opacity: 0, y: -18 } : { opacity: 1, y: 0 }}
-          transition={{ duration: opening ? 0.6 : 0.9, delay: opening ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div>
-            <strong>{opening ? 'Opening' : 'Opening soon'}</strong>
-          </div>
-        </motion.div>
       </motion.div>
     </AnimatePresence>
   );
