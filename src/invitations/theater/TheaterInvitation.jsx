@@ -388,7 +388,7 @@ function ReferenceHero({
         <p className="theater-ref-request">Request the honor of your presence at the premiere of their forever</p>
         {weddingDate && (
           <div className="theater-ref-hero-date">
-            <span>{dayStr ? `${dayStr},` : 'Wedding Day'}</span>
+            <span>{dayStr || 'Wedding Day'}</span>
             <strong>{dayOfMonth || ''}</strong>
             <span>{monthYearStr || ''}</span>
           </div>
