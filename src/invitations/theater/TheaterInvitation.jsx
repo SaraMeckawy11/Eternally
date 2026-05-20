@@ -453,7 +453,7 @@ function MemoriesSection({ images }) {
   const memoryImageKey = uniqueImages.map(getInvitationPhotoSrc).join('|');
   const trackRef = useRef(null);
   const unitRef = useRef(null);
-  const unitRepeatCount = uniqueImages.length ? Math.max(1, Math.ceil(4 / uniqueImages.length)) : 0;
+  const unitRepeatCount = uniqueImages.length ? Math.max(3, Math.ceil(12 / uniqueImages.length)) : 0;
   const repeatedImages = uniqueImages.length
     ? Array.from({ length: unitRepeatCount }, () => uniqueImages).flat()
     : [];
@@ -564,7 +564,7 @@ function MemoriesSection({ images }) {
       />
       <div className="theater-memories-viewport">
         <div className="theater-memories-track" ref={trackRef}>
-          {[0, 1].map((groupIndex) => (
+          {[0, 1, 2, 3].map((groupIndex) => (
             <ul
               key={groupIndex}
               ref={groupIndex === 0 ? unitRef : null}

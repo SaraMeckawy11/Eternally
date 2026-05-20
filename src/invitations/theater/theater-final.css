@@ -103,11 +103,11 @@ body:has(.theater-theme),
 
 .theater-hero-date {
   left: 18%;
-  top: 54.85%;
+  top: 56.4%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.28em;
+  gap: 0.38em;
   width: 64%;
   color: var(--theater-red);
   font-family: var(--font-marquee);
@@ -117,8 +117,8 @@ body:has(.theater-theme),
 .theater-hero-weekday {
   position: relative;
   display: inline-block;
-  padding: 0.12em 0.9em 0.18em;
-  background: #f0dcb7;
+  padding: 0;
+  background: transparent;
   color: #331d15;
   font-size: clamp(0.62rem, 1.55vw, 0.98rem);
   font-weight: 800;
@@ -156,7 +156,7 @@ body:has(.theater-theme),
 }
 
 .theater-hero-month {
-  margin-top: 0;
+  margin-top: 0.4em;
 }
 
 .theater-hero-time {
@@ -238,7 +238,7 @@ body:has(.theater-theme),
 }
 
 .theater-count-card:nth-child(2) strong {
-  transform: translate(11%, 8%);
+  transform: translate(20%, 8%);
 }
 
 .theater-count-card span {
@@ -461,12 +461,12 @@ body:has(.theater-theme),
 }
 
 .theater-details-date {
-  left: 23.5%;
+  left: 21%;
   top: 44.5%;
 }
 
 .theater-details-time {
-  left: 62.5%;
+  left: 60%;
   top: 44.5%;
 }
 
@@ -784,10 +784,9 @@ body:has(.theater-theme),
 }
 
 .theater-memories-viewport {
+  position: relative;
   width: 100%;
   overflow: hidden;
-  contain: layout paint;
-  overflow-clip-margin: 0;
   padding-block: clamp(8px, 2vw, 16px);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
@@ -816,11 +815,11 @@ body:has(.theater-theme),
 .theater-memory-card {
   position: relative;
   flex: 0 0 clamp(168px, 54vw, 260px);
-  aspect-ratio: 268 / 404;
+  width: clamp(168px, 54vw, 260px);
+  height: calc(clamp(168px, 54vw, 260px) * 404 / 268);
   margin: 0;
   padding: 0;
   background: url("../../assets/theater/memories/emptyContainer_transparent.png") center / contain no-repeat;
-  contain: layout paint;
   list-style: none;
 }
 
