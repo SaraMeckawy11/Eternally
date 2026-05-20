@@ -39,6 +39,26 @@
   font-family: 'Playfair Display', Georgia, serif !important;
 }
 
+.theater-ref-experience .theater-gallery-section .theater-gallery-header {
+  background-image: url("../../assets/theater/memories/titleEmpty(4)_transparent.png") !important;
+}
+
+.theater-ref-experience .theater-gallery-section .theater-gallery-header h2 {
+  position: absolute !important;
+  inset: 40% 13% 14% !important;
+  display: grid !important;
+  place-items: center !important;
+  margin: 0 !important;
+  color: #78160f !important;
+  font-family: 'Cinzel', 'Trajan Pro', serif !important;
+  font-size: clamp(1.25rem, 6vw, 3.2rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.18em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 1px 0 rgba(255, 245, 218, 0.9), 0 2px 2px rgba(92, 38, 16, 0.18) !important;
+}
+
 .theater-ref-experience .theater-story-list {
   width: min(640px, 92vw) !important;
   margin: 0 auto !important;
@@ -177,20 +197,20 @@
 }
 
 /* ============================================================================
-   HERO – uses hero.png as the full backdrop
+   HERO - uses heroEmpty.png as the backdrop; all wording is live text
    ============================================================================ */
 .theater-ref-experience .theater-ref-hero {
   position: relative !important;
-  width: min(640px, 100vw) !important;
+  width: min(941px, 100vw) !important;
   margin: 0 auto !important;
   padding: 0 !important;
-  aspect-ratio: 936 / 1664 !important;
+  aspect-ratio: 941 / 1672 !important;
   min-height: 0 !important;
-  background: url("../../assets/theater/hero.png") center / 100% 100% no-repeat !important;
+  background: url("../../assets/theater/heroEmpty.png") center / 100% 100% no-repeat !important;
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  overflow: visible !important;
+  overflow: hidden !important;
 }
 
 .theater-ref-experience .theater-ref-hero-ticket {
@@ -209,8 +229,8 @@
   display: block !important;
 }
 
-/* hide ALL hero ticket content - the hero.png image already contains
-   the full composition (names, date, venue, admit ticket, etc.) */
+/* Earlier image-backed mode hid this content; the final live-hero block below
+   turns the variable text back on and positions it over heroEmpty.png. */
 .theater-ref-experience .theater-ref-hero-ticket > *,
 .theater-ref-experience .theater-ref-hero-ticket .theater-ref-eyebrow,
 .theater-ref-experience .theater-ref-hero-ticket .theater-ref-request,
@@ -366,9 +386,10 @@
    COUNTDOWN – countdown1.png landscape (3:2)
    ============================================================================ */
 .theater-ref-experience .theater-ref-countdown {
+  position: relative !important;
   width: min(640px, 100vw) !important;
-  aspect-ratio: 600 / 400 !important;
-  background: url("../../assets/theater/countdown1.png") center / 100% 100% no-repeat !important;
+  aspect-ratio: 1536 / 1024 !important;
+  background: url("../../assets/theater/countdownEmpty.png") center / 100% 100% no-repeat !important;
 }
 
 .theater-ref-experience .theater-ref-countdown > *,
@@ -384,6 +405,20 @@
   display: none !important;
 }
 
+.theater-ref-experience .theater-ref-countdown .theater-ref-count-grid {
+  position: absolute !important;
+  left: 9.1% !important;
+  top: 46.2% !important;
+  width: 81.9% !important;
+  height: 33.9% !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 4.7% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 3 !important;
+}
+
 .theater-ref-experience .theater-ref-countdown .theater-ref-count-card {
   background: transparent !important;
   border: 0 !important;
@@ -396,37 +431,28 @@
   color: #4a1810 !important;
   font-family: 'Playfair Display', serif !important;
   text-align: center !important;
-  aspect-ratio: 1 / 1.35 !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
 }
 
 .theater-ref-experience .theater-ref-countdown .theater-ref-count-card span {
-  order: -1 !important;
-  font-family: 'Cinzel', serif !important;
-  font-size: clamp(0.55rem, 1.8vw, 0.85rem) !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.16em !important;
-  text-transform: uppercase !important;
-  margin-top: 8% !important;
-  color: #4a1810 !important;
+  display: none !important;
 }
 
 .theater-ref-experience .theater-ref-countdown .theater-ref-count-card strong {
-  font-size: clamp(1.6rem, 6.5vw, 2.6rem) !important;
+  display: block !important;
+  font-size: clamp(2rem, 8.4vw, 4.2rem) !important;
   font-weight: 700 !important;
   line-height: 1 !important;
-  color: #4a1810 !important;
-  margin: 5% 0 !important;
+  color: #78160f !important;
+  margin: 0 0 9% !important;
+  text-shadow: 0 1px 0 rgba(255, 245, 218, 0.9), 0 2px 2px rgba(92, 38, 16, 0.18) !important;
 }
 
 .theater-ref-experience .theater-ref-countdown .theater-ref-count-card .theater-ref-count-icon,
 .theater-ref-experience .theater-ref-countdown .theater-ref-count-card i {
-  width: 18% !important;
-  height: 18% !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-size: contain !important;
-  border: 0 !important;
-  border-radius: 0 !important;
+  display: none !important;
 }
 
 /* ============================================================================
@@ -465,43 +491,195 @@
    DETAILS – details.png portrait
    ============================================================================ */
 .theater-ref-experience .theater-ref-details {
+  position: relative !important;
   width: min(640px, 100vw) !important;
-  aspect-ratio: 400 / 600 !important;
-  background: url("../../assets/theater/details.png") center / 100% 100% no-repeat !important;
+  aspect-ratio: 1024 / 1536 !important;
+  background: url("../../assets/theater/details_transparent.png") center / 100% 100% no-repeat !important;
+  overflow: hidden !important;
 }
 
 .theater-ref-experience .theater-ref-details > * {
   display: none !important;
 }
 
-/* map overlay - this is the only dynamic piece; keep it positioned over map */
+.theater-ref-experience .theater-ref-details .theater-ref-details-venue {
+  position: absolute !important;
+  left: 35.8% !important;
+  top: 31.1% !important;
+  width: 48% !important;
+  display: block !important;
+  z-index: 3 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  text-align: left !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-details-venue .theater-ref-round-icon,
+.theater-ref-experience .theater-ref-details .theater-ref-details-venue span {
+  display: none !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-details-venue h3 {
+  display: block !important;
+  margin: 0 0 0.35em !important;
+  color: #70150f !important;
+  font-family: 'Cinzel', 'Trajan Pro', serif !important;
+  font-size: clamp(0.84rem, 2.55vw, 1.54rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.12 !important;
+  text-transform: uppercase !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-details-venue p {
+  display: block !important;
+  margin: 0 !important;
+  color: #4b2414 !important;
+  font-family: 'Cinzel', 'Trajan Pro', serif !important;
+  font-size: clamp(0.58rem, 1.7vw, 0.96rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.28 !important;
+  text-transform: uppercase !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-detail-row {
+  position: absolute !important;
+  left: 23.9% !important;
+  top: 45.6% !important;
+  width: 61% !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 19% !important;
+  z-index: 3 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-detail-item {
+  display: block !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  text-align: left !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-detail-item i,
+.theater-ref-experience .theater-ref-details .theater-ref-detail-item span {
+  display: none !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-detail-item strong {
+  display: block !important;
+  margin: 0 0 0.25em !important;
+  color: #70150f !important;
+  font-family: 'Cinzel', 'Trajan Pro', serif !important;
+  font-size: clamp(0.72rem, 2.15vw, 1.2rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.12 !important;
+  text-transform: uppercase !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-detail-item small {
+  display: block !important;
+  color: #4b2414 !important;
+  font-family: 'Cinzel', 'Trajan Pro', serif !important;
+  font-size: clamp(0.5rem, 1.5vw, 0.82rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+}
+
 .theater-ref-experience .theater-ref-details .theater-ref-map-card {
   display: block !important;
   position: absolute !important;
-  top: 50% !important;
-  left: 10% !important;
-  right: 10% !important;
-  height: 25% !important;
+  top: 51.2% !important;
+  left: 8.25% !important;
+  right: auto !important;
+  width: 83.6% !important;
+  height: 31.7% !important;
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
-  border-radius: 12px !important;
+  border-radius: 0 !important;
   overflow: hidden !important;
   z-index: 2 !important;
-  opacity: 0.001 !important; /* keep it interactive but invisible so PNG map shows */
+  opacity: 1 !important;
   pointer-events: auto !important;
 }
 
 .theater-ref-experience .theater-ref-details .theater-ref-map-card iframe {
+  display: block !important;
   width: 100% !important;
   height: 100% !important;
   border: 0 !important;
+  opacity: 0.74 !important;
+  filter: sepia(0.35) saturate(0.8) contrast(0.9) !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-map-pin {
+  position: absolute !important;
+  left: 50% !important;
+  top: 53% !important;
+  z-index: 5 !important;
+  display: block !important;
+  width: clamp(28px, 9vw, 54px) !important;
+  aspect-ratio: 1 !important;
+  transform: translate(-50%, -100%) !important;
+  background: url("../../assets/theater/details/mapPointer_transparent.png") center / contain no-repeat !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-map-pin span {
+  display: none !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-map-card::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: -11% !important;
+  z-index: 6 !important;
+  display: block !important;
+  width: 54% !important;
+  aspect-ratio: 1830 / 698 !important;
+  transform: translateX(-50%) !important;
+  background: url("../../assets/theater/details/findYourWay_transparent.png") center / contain no-repeat !important;
+  pointer-events: none !important;
+}
+
+.theater-ref-experience .theater-ref-details .theater-ref-map-card::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 5.5% !important;
+  top: 9% !important;
+  z-index: 6 !important;
+  display: block !important;
+  width: clamp(28px, 8vw, 52px) !important;
+  aspect-ratio: 1 !important;
+  background: url("../../assets/theater/details/northNavIcon_transparent.png") center / contain no-repeat !important;
+  pointer-events: none !important;
 }
 
 .theater-ref-experience .theater-ref-details .theater-ref-map-card a {
   position: absolute !important;
-  inset: 0 !important;
-  opacity: 0 !important;
+  right: 3.5% !important;
+  bottom: 4% !important;
+  z-index: 7 !important;
+  display: block !important;
+  width: 26% !important;
+  min-width: 92px !important;
+  aspect-ratio: 1849 / 698 !important;
+  height: auto !important;
+  overflow: hidden !important;
+  color: transparent !important;
+  background: url("../../assets/theater/details/openInMaps_transparent.png") center / contain no-repeat !important;
+  border: 0 !important;
+  opacity: 1 !important;
 }
 
 /* ============================================================================
@@ -696,7 +874,7 @@
 
 /* ----- live hero text over the empty theater artwork --------------------- */
 .theater-ref-experience .theater-ref-hero {
-  width: min(640px, 100vw) !important;
+  width: min(941px, 100vw) !important;
   aspect-ratio: 941 / 1672 !important;
   background: url("../../assets/theater/heroEmpty.png") center / 100% 100% no-repeat !important;
   overflow: hidden !important;

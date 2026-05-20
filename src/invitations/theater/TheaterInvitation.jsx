@@ -284,7 +284,7 @@ function TheaterReferenceExperience({
     { label: 'Seconds', value: pad(timeLeft.seconds), icon: 'stopwatch' },
   ];
   const ticketSerial = weddingDate
-    ? `${String(weddingDate.getMonth() + 1).padStart(2, '0')}${String(weddingDate.getDate()).padStart(2, '0')}${weddingDate.getFullYear()}`
+    ? `${String(weddingDate.getDate()).padStart(2, '0')}${String(weddingDate.getMonth() + 1).padStart(2, '0')}${weddingDate.getFullYear()}`
     : billingCode;
 
   return (
@@ -390,7 +390,7 @@ function ReferenceHero({
         <p className="theater-ref-request">Request the honor of your presence at the premiere of their forever</p>
         {weddingDate && (
           <div className="theater-ref-hero-date">
-            <span>{dayStr || 'Wedding Day'}</span>
+            <span>{dayStr ? `${dayStr},` : 'Wedding Day'}</span>
             <strong>{dayOfMonth || ''}</strong>
             <span>{monthYearStr || ''}</span>
           </div>

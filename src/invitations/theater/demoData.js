@@ -12,16 +12,16 @@ import story4 from '../../assets/story-4.png';
 export const THEATER_DEMO_ORDER = {
   referenceLayout: true,
   weddingDetails: {
-    groomName: 'Adrian',
-    brideName: 'Noor',
-    weddingDate: '2026-10-12T19:30:00.000Z',
-    weddingTime: '7:30 PM',
-    venue: 'The Grand Opera House',
-    venueAddress: 'Cairo Opera House, Zamalek',
+    groomName: 'Omar Kareem',
+    brideName: 'Layla Hassan',
+    weddingDate: '2026-09-12T18:30:00.000Z',
+    weddingTime: '6:30 PM',
+    venue: 'The Royale Grand Theatre',
+    venueAddress: 'Cairo, Egypt',
     venueMapUrl:
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.1786!2d31.2357!3d30.0444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDAyJzM5LjgiTiAzMcKwMTQnMDguNSJF!5e0!3m2!1sen!2seg!4v1234567890',
-    message: 'Tonight, the curtain rises on forever.',
-    flightNo: 'ACT-2026',
+    message: 'Black tie  •  Dinner & dancing to follow',
+    flightNo: '12092026',
   },
   storyMilestones: [
     {
