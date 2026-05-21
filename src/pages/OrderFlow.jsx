@@ -343,12 +343,20 @@ export default function OrderFlow() {
     img.src = blobUrl;
   });
 
-  // Upload a single file to Cloudinary in the background and update photos state
+  // Upload a single file to Cloudinary in the background and update photos state.
+  // Android browsers sometimes hand us a File whose .name is empty or whose
+  // mimetype is application/octet-stream (e.g. HEIC files synced from iCloud,
+  // photos opened from Downloads). FormData.append with an explicit filename
+  // ensures the server sees a usable originalname, and the server's filter now
+  // accepts by extension as well as mimetype.
   const uploadFileInBackground = useCallback((file, category, localId) => {
     const fd = new FormData();
-    fd.append('photos', file);
+    const filename = file.name && file.name !== 'blob'
+      ? file.name
+      : `photo-${Date.now()}.jpg`;
+    fd.append('photos', file, filename);
     fetch(`${API}/upload?category=${category}`, { method: 'POST', body: fd })
-      .then(r => r.json().then(data => ({ ok: r.ok, data })))
+      .then(r => r.json().then(data => ({ ok: r.ok, data })).catch(() => ({ ok: r.ok, data: { error: `HTTP ${r.status}` } })))
       .then(({ ok, data }) => {
         if (!ok || !data.files?.[0]) throw new Error(data.error || 'Upload failed');
         // Swap the local preview with the Cloudinary URL
@@ -361,7 +369,7 @@ export default function OrderFlow() {
           ),
         }));
       })
-      .catch(() => {
+      .catch((err) => {
         // Keep the local preview visible but mark as failed — user can retry or remove
         setPhotos(prev => ({
           ...prev,
@@ -369,7 +377,7 @@ export default function OrderFlow() {
             p._localId === localId ? { ...p, _uploading: false, _failed: true } : p
           ),
         }));
-        setUploadError('One or more photos failed to upload. You can remove and re-add them.');
+        setUploadError(`Photo upload failed: ${err?.message || 'network error'}. Tap the photo to remove and try again.`);
       });
   }, []);
 
@@ -922,7 +930,7 @@ export default function OrderFlow() {
                     <label className="photo-upload-btn">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                       Add
-                      <input type="file" multiple accept="image/*,.heic,.heif" onChange={e => handlePhotoUpload(e, 'venue')} style={{ position: 'absolute', width: 0, height: 0, opacity: 0, overflow: 'hidden' }} />
+                      <input type="file" multiple accept="image/*" onChange={e => handlePhotoUpload(e, 'venue')} />
                     </label>
                   )}
                   {photos.venue.map((photo, i) => (
@@ -991,7 +999,7 @@ export default function OrderFlow() {
                           <label className="photo-upload-btn photo-upload-btn--square photo-upload-btn--template" style={storyPreviewStyle}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                             Photo
-                            <input type="file" accept="image/*,.heic,.heif" onChange={(e) => {
+                            <input type="file" accept="image/*" onChange={(e) => {
                               const files = e.target.files;
                               if (!files.length) return;
                               setUploadError('');
@@ -1018,7 +1026,7 @@ export default function OrderFlow() {
                                   return { ...prev, story: updated };
                                 });
                               });
-                            }} style={{ position: 'absolute', width: 0, height: 0, opacity: 0, overflow: 'hidden' }} />
+                            }} />
                           </label>
                         )}
                       </div>
@@ -1051,7 +1059,7 @@ export default function OrderFlow() {
                     <label className="photo-upload-btn photo-upload-btn--template photo-upload-btn--gallery" style={galleryPreviewStyle}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                       Add
-                      <input type="file" multiple accept="image/*,.heic,.heif" onChange={e => handlePhotoUpload(e, 'gallery')} style={{ position: 'absolute', width: 0, height: 0, opacity: 0, overflow: 'hidden' }} />
+                      <input type="file" multiple accept="image/*" onChange={e => handlePhotoUpload(e, 'gallery')} />
                     </label>
                   )}
                   {photos.gallery.map((photo, i) => (
