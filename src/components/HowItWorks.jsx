@@ -28,30 +28,53 @@ const steps = [
 export default function HowItWorks() {
   const headerRef = useReveal();
   const stepRefs = useRef([]);
-  const [activeCount, setActiveCount] = useState(0);
+  const [activeSteps, setActiveSteps] = useState(() => new Set());
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        let highest = -1;
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.dataset.index);
-            if (index > highest) highest = index;
-          }
-        });
-        // Mark every step up to the furthest one reached, so the gold
-        // fill advances in sequence as the user scrolls and never regresses.
-        if (highest >= 0) {
-          setActiveCount((prev) => Math.max(prev, highest + 1));
-        }
-      },
-      { threshold: 0.6, rootMargin: '0px 0px -15% 0px' }
-    );
+    let frame = null;
 
-    const nodes = stepRefs.current.filter(Boolean);
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
+    // Live, scroll-driven highlight: whichever step the user is currently
+    // scrolled next to lights up its gold border. It re-measures on every
+    // scroll, so the highlight follows the user's position (and re-matches
+    // from the top when they scroll back up) instead of latching on once.
+    const measure = () => {
+      frame = null;
+      const focal = window.innerHeight / 2;
+      const reach = window.innerHeight / 2;
+      const distances = stepRefs.current.map((el) => {
+        if (!el) return Infinity;
+        const rect = el.getBoundingClientRect();
+        return Math.abs(rect.top + rect.height / 2 - focal);
+      });
+      const nearest = Math.min(...distances);
+      const next = new Set();
+      if (nearest <= reach) {
+        // Mark the step(s) nearest the focal line. On a stacked mobile layout
+        // that's one step that changes as you scroll; on a desktop row the
+        // whole row shares the focal line and lights together.
+        distances.forEach((d, i) => {
+          if (d <= nearest + 14) next.add(i);
+        });
+      }
+      setActiveSteps((prev) => {
+        if (prev.size === next.size && [...next].every((i) => prev.has(i))) return prev;
+        return next;
+      });
+    };
+
+    const onScroll = () => {
+      if (frame == null) frame = requestAnimationFrame(measure);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    measure();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame != null) cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (
@@ -68,11 +91,9 @@ export default function HowItWorks() {
         <div className="steps-grid">
           {steps.map((step, index) => (
             <div
-              className={`step-card${index < activeCount ? ' step-active' : ''}`}
+              className={`step-card${activeSteps.has(index) ? ' step-active' : ''}`}
               key={step.number}
               ref={(el) => { stepRefs.current[index] = el; }}
-              data-index={index}
-              style={{ '--step-index': index }}
             >
               <div className="step-number">{step.number}</div>
               <h3>{step.title}</h3>
