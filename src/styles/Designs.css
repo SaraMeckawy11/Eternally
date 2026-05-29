@@ -98,11 +98,19 @@
 
 .design-card-image--fountain {
   background-size: cover;
-  background-position: center 38%;
+  background-position: center 34%;
+  filter: saturate(1.14) contrast(1.07) brightness(1.04);
+  image-rendering: -webkit-optimize-contrast;
+  transition: transform 0.5s ease, filter 0.5s ease;
 }
 
 .design-card:hover .design-card-image {
   transform: scale(1.05);
+}
+
+.design-card:hover .design-card-image--fountain {
+  transform: scale(1.07);
+  filter: saturate(1.2) contrast(1.1) brightness(1.06);
 }
 
 .design-preview-text {

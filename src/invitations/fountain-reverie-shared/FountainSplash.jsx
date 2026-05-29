@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import doorImage from '../../assets/Fountain Reverie/door.png';
 import './fountain-reverie.css';
 
-const AUTO_OPEN_MIN_MS = 800;
+const AUTO_OPEN_MIN_MS = 1200;
 const AUTO_OPEN_FALLBACK_MS = 1500;
 
 export default function FountainSplash({ onDismiss }) {
@@ -21,8 +21,8 @@ export default function FountainSplash({ onDismiss }) {
     if (openingRef.current) return;
     openingRef.current = true;
     setOpening(true);
-    setTimeout(() => setFading(true), 2850);
-    setTimeout(() => onDismissRef.current(), 3400);
+    setTimeout(() => setFading(true), 4600);
+    setTimeout(() => onDismissRef.current(), 5200);
   }, []);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function FountainSplash({ onDismiss }) {
     };
   }, [handleOpen]);
 
-  const swingDuration = 2.7;
+  const swingDuration = 4.4;
   const swingEase = [0.45, 0, 0.2, 1];
 
   return (

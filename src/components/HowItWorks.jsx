@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import '../styles/HowItWorks.css';
 import useReveal from '../hooks/useReveal';
 
@@ -26,6 +27,32 @@ const steps = [
 
 export default function HowItWorks() {
   const headerRef = useReveal();
+  const stepRefs = useRef([]);
+  const [activeCount, setActiveCount] = useState(0);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let highest = -1;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.dataset.index);
+            if (index > highest) highest = index;
+          }
+        });
+        // Mark every step up to the furthest one reached, so the gold
+        // fill advances in sequence as the user scrolls and never regresses.
+        if (highest >= 0) {
+          setActiveCount((prev) => Math.max(prev, highest + 1));
+        }
+      },
+      { threshold: 0.6, rootMargin: '0px 0px -15% 0px' }
+    );
+
+    const nodes = stepRefs.current.filter(Boolean);
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section className="section how-section" id="how-it-works">
@@ -39,8 +66,14 @@ export default function HowItWorks() {
         </div>
 
         <div className="steps-grid">
-          {steps.map(step => (
-            <div className="step-card" key={step.number}>
+          {steps.map((step, index) => (
+            <div
+              className={`step-card${index < activeCount ? ' step-active' : ''}`}
+              key={step.number}
+              ref={(el) => { stepRefs.current[index] = el; }}
+              data-index={index}
+              style={{ '--step-index': index }}
+            >
               <div className="step-number">{step.number}</div>
               <h3>{step.title}</h3>
               <p>{step.description}</p>

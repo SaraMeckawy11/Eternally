@@ -65,6 +65,26 @@
   transform: scale(1.05);
 }
 
+/* Scroll-driven sequential highlight: each number fills with gold as the
+   user reaches it. The per-step delay makes the gold cascade 1 → 2 → 3 → 4
+   even when the whole row enters the viewport at once on desktop. */
+.step-card.step-active .step-number,
+.step-card.step-active:hover .step-number {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--white);
+  transform: scale(1.08);
+  box-shadow: 0 10px 26px rgba(184, 146, 74, 0.32);
+  transition-delay: calc(var(--step-index, 0) * 0.18s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-card.step-active .step-number,
+  .step-card.step-active:hover .step-number {
+    transition-delay: 0s;
+  }
+}
+
 .step-card h3 {
   position: relative;
   z-index: 2;
