@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { getPaypal } from '../lib/paypal';
 import InvitationPhoto from '../invitations/InvitationPhoto';
-import fountainHero1Preview from '../assets/Fountain Reverie/hero1empty.png';
-import fountainHero2Preview from '../assets/Fountain Reverie/hero2empty.png';
+import fountainHero1Preview from '../assets/Fountain Reverie/thumbnail1.png';
+import fountainHero2Preview from '../assets/Fountain Reverie/thumbnail2.png';
 import '../styles/OrderFlow.css';
 
 const API = import.meta.env.VITE_API_URL || '/api';
@@ -653,7 +653,7 @@ export default function OrderFlow() {
 
   const optionalFields = [
     { key: 'venueAddress', label: 'Venue Address' },
-    // { key: 'message', label: 'Personal Message' },
+    { key: 'message', label: 'Personal Message' },
     { key: 'rsvp', label: 'RSVP Section' },
     // Removed secondLanguage option
   ];
@@ -1112,6 +1112,7 @@ export default function OrderFlow() {
                   {form.weddingTime && !disabledFields.includes('weddingTime') && <div className="review-item"><span className="review-label">Time</span><span>{form.weddingTime}</span></div>}
                   <div className="review-item"><span className="review-label">Venue</span><span>{form.venue}</span></div>
                   {form.venueAddress && !disabledFields.includes('venueAddress') && <div className="review-item"><span className="review-label">Address</span><span>{form.venueAddress}</span></div>}
+                  {form.message && !disabledFields.includes('message') && <div className="review-item"><span className="review-label">Message</span><span>{form.message}</span></div>}
                 </div>
               </div>
 

@@ -6,6 +6,8 @@ import FountainHeroText from './FountainHeroText';
 import './fountain-reverie.css';
 import { buildInvitationImageSources, containInvitationPhoto, getInvitationPhotoSrc } from '../shared';
 import InvitationPhoto from '../InvitationPhoto';
+import sectionSeparator from '../../assets/Fountain Reverie/decorative_components/elegant_vintage_ornamental_flourish_transparent.png';
+import envelopeMessage from '../../assets/Fountain Reverie/envelope_message.png';
 
 const API = import.meta.env.VITE_API_URL || '/api';
 
@@ -71,19 +73,6 @@ function formatWeddingDateParts(date) {
   };
 }
 
-const FlourishSvg = ({ className = '' }) => (
-  <svg className={className} viewBox="0 0 190 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-    <path d="M4 11H77" stroke="currentColor" strokeWidth="0.85" opacity="0.7" />
-    <path d="M113 11H186" stroke="currentColor" strokeWidth="0.85" opacity="0.7" />
-    <path d="M95 4.5C98.6 8.5 98.6 13.5 95 17.5C91.4 13.5 91.4 8.5 95 4.5Z" stroke="currentColor" strokeWidth="0.9" />
-    <path d="M84 11C89 6.8 93 7.2 95 11C93 14.8 89 15.2 84 11Z" stroke="currentColor" strokeWidth="0.9" />
-    <path d="M106 11C101 6.8 97 7.2 95 11C97 14.8 101 15.2 106 11Z" stroke="currentColor" strokeWidth="0.9" />
-    <path d="M95 8.2C97.1 9.9 97.1 12.1 95 13.8C92.9 12.1 92.9 9.9 95 8.2Z" fill="currentColor" opacity="0.76" />
-    <circle cx="80" cy="11" r="1.15" fill="currentColor" opacity="0.74" />
-    <circle cx="110" cy="11" r="1.15" fill="currentColor" opacity="0.74" />
-  </svg>
-);
-
 const Crest = ({ initials }) => (
   <div className="fountain-crest" aria-hidden>
     <svg className="fountain-crest-frame" viewBox="0 0 170 118" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -121,6 +110,9 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
   const timeOfDay = fieldEnabled('weddingTime') ? getTimeOfDayLine(wd.weddingTime) : '';
   const venue = wd.venue || '';
   const venueAddress = fieldEnabled('venueAddress') ? (wd.venueAddress || '') : '';
+  const coupleMessage = fieldEnabled('message')
+    ? (order.coupleMessage || wd.message || 'Thank you for sharing in the joy of this day. Your love and support mean more to us than words can say, and we cannot wait to celebrate this new beginning with you.')
+    : '';
   const shouldPlayMusic = Boolean(order.musicUrl && order.musicEnabled !== false);
   const isReferenceDemo = Boolean(demo && order.referenceLayout);
   const initials = `${name1[0] || 'A'}${name2[0] || 'Z'}`.toUpperCase();
@@ -267,35 +259,39 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
       </section>
 
       {weddingDate && (
-        <section className="fountain-countdown">
-          <SectionTitle eyebrow="Save The Date" title="Counting The Moments" light />
-          <div className="fountain-count-grid">
-            <CountdownUnit value={pad(timeLeft.days)} label="Days" />
-            <CountdownUnit value={pad(timeLeft.hours)} label="Hours" />
-            <CountdownUnit value={pad(timeLeft.minutes)} label="Minutes" />
-            <CountdownUnit value={pad(timeLeft.seconds)} label="Seconds" />
-          </div>
-        </section>
+        <>
+          <section className="fountain-countdown">
+            <SectionTitle title="Countdown" />
+            <div className="fountain-count-grid">
+              <CountdownUnit value={pad(timeLeft.days)} label="Days" />
+              <CountdownUnit value={pad(timeLeft.hours)} label="Hours" />
+              <CountdownUnit value={pad(timeLeft.minutes)} label="Minutes" />
+              <CountdownUnit value={pad(timeLeft.seconds)} label="Seconds" />
+            </div>
+          </section>
+        </>
       )}
 
       {!isReferenceDemo && couplePhotos.length > 0 && (
-        <section className="fountain-section fountain-couple-section">
-          <SectionTitle eyebrow="The Couple" title="A Love" script="In Bloom" />
-          <div className="fountain-couple-grid">
-            {couplePhotos.map((photo, index) => (
-              <motion.figure
-                key={index}
-                className="fountain-photo-frame fountain-couple-photo"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: index * 0.08 }}
-              >
-                <InvitationPhoto src={photo} alt={`Couple ${index + 1}`} sizes="(max-width: 768px) 80vw, 320px" />
-              </motion.figure>
-            ))}
-          </div>
-        </section>
+        <>
+          <section className="fountain-section fountain-couple-section">
+            <SectionTitle title="Couple" />
+            <div className="fountain-couple-grid">
+              {couplePhotos.map((photo, index) => (
+                <motion.figure
+                  key={index}
+                  className="fountain-photo-frame fountain-couple-photo"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.55, delay: index * 0.08 }}
+                >
+                  <InvitationPhoto src={photo} alt={`Couple ${index + 1}`} sizes="(max-width: 768px) 80vw, 320px" />
+                </motion.figure>
+              ))}
+            </div>
+          </section>
+        </>
       )}
 
       {isReferenceDemo && order.storyMilestones?.length ? (
@@ -305,7 +301,7 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
       ) : null}
 
       <section className="fountain-section fountain-event-section">
-        <SectionTitle eyebrow="The Big Day" title="Ceremony" script="& Reception" />
+        <SectionTitle title="Details" />
         <div className="fountain-event-layout">
           <motion.div
             className="fountain-event-card"
@@ -314,8 +310,13 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3>{venue || 'The Garden Pavilion'}</h3>
             <dl>
+              {venue && (
+                <div>
+                  <dt>Venue</dt>
+                  <dd>{venue}</dd>
+                </div>
+              )}
               <div>
                 <dt>Date</dt>
                 <dd>{dateParts.full || 'To be announced'}</dd>
@@ -354,59 +355,55 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
         )}
       </section>
 
+      {coupleMessage && <CoupleMessageSection message={coupleMessage} name1={name1} name2={name2} />}
+
       {rsvpEnabled && (
-        <section className="fountain-rsvp-section">
-          <div className="fountain-rsvp-inner">
-            <div className="fountain-rsvp-intro">
-              <span className="fountain-small-label">RSVP</span>
-              <h2>Kindly Respond</h2>
-              <p>We cannot wait to celebrate beside the fountain light. Please let us know by replying below.</p>
-              <div className="fountain-rsvp-date-card" aria-label="Wedding details">
-                <span>{dateParts.full || 'Date to be announced'}</span>
-                <strong>{venue || 'The Garden Pavilion'}</strong>
+        <>
+          <section className="fountain-rsvp-section">
+            <div className="fountain-rsvp-panel">
+              <div className="fountain-rsvp-panel-header">
+                <img className="fountain-rsvp-panel-ornament" src={sectionSeparator} alt="" aria-hidden="true" />
+                <h2>RSVP</h2>
+                <strong>Kindly Respond</strong>
+                <p>We cannot wait to celebrate with you.<br />Please let us know by replying below.</p>
               </div>
-            </div>
-
-            <AnimatePresence mode="wait">
-              {!rsvpSubmitted ? (
-                <motion.form
-                  key="rsvp-form"
-                  onSubmit={handleRsvp}
-                  className="fountain-rsvp-card"
-                  exit={{ opacity: 0, y: -20 }}
-                  initial={{ opacity: 0, y: 28 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.55 }}
-                >
-                  <div className="fountain-rsvp-grid">
-                    <div className="fountain-field fountain-field-full">
-                      <label htmlFor="fountain-rsvp-name">Full name</label>
-                      <input
-                        id="fountain-rsvp-name"
-                        type="text"
-                        required
-                        value={rsvpForm.guestName}
-                        onChange={event => setRsvpForm({ ...rsvpForm, guestName: event.target.value })}
-                        placeholder="Your full name"
-                      />
-                    </div>
-
-                    <div className="fountain-field">
-                      <label htmlFor="fountain-rsvp-guests">Guests</label>
-                      <input
-                        id="fountain-rsvp-guests"
-                        type="number"
-                        min={1}
-                        max={10}
-                        value={rsvpForm.guestCount}
-                        onChange={event => setRsvpForm({ ...rsvpForm, guestCount: parseInt(event.target.value) || 1 })}
-                      />
-                    </div>
-
-                    <div className="fountain-field fountain-field-attending">
-                      <label>Will you attend?</label>
-                      <div className="fountain-rsvp-toggle" role="radiogroup" aria-label="Will you attend?">
+              <AnimatePresence mode="wait">
+                {!rsvpSubmitted ? (
+                  <motion.form
+                    key="rsvp-form"
+                    onSubmit={handleRsvp}
+                    className="fountain-rsvp-panel-form"
+                    exit={{ opacity: 0, y: -20 }}
+                    initial={{ opacity: 0, y: 28 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.55 }}
+                  >
+                  <label className="fountain-rsvp-panel-field" htmlFor="fountain-rsvp-name">
+                    <span>Full name</span>
+                    <input
+                      id="fountain-rsvp-name"
+                      type="text"
+                      required
+                      value={rsvpForm.guestName}
+                      onChange={event => setRsvpForm({ ...rsvpForm, guestName: event.target.value })}
+                      placeholder="e.g. Olivia Rossi"
+                    />
+                  </label>
+                  <label className="fountain-rsvp-panel-field" htmlFor="fountain-rsvp-guests">
+                    <span>Number of guests</span>
+                    <input
+                      id="fountain-rsvp-guests"
+                      type="number"
+                      min={1}
+                      max={10}
+                      value={rsvpForm.guestCount}
+                      onChange={event => setRsvpForm({ ...rsvpForm, guestCount: parseInt(event.target.value, 10) || 1 })}
+                    />
+                  </label>
+                    <fieldset className="fountain-rsvp-panel-choice">
+                      <legend>Will you attend?</legend>
+                      <div role="radiogroup" aria-label="Will you attend?">
                         <button
                           type="button"
                           role="radio"
@@ -414,7 +411,8 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
                           className={rsvpForm.attending === 'yes' ? 'active' : ''}
                           onClick={() => setRsvpForm({ ...rsvpForm, attending: 'yes' })}
                         >
-                          Joyfully accept
+                          <span>Joyfully</span>
+                          <small>Accept</small>
                         </button>
                         <button
                           type="button"
@@ -423,44 +421,43 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
                           className={rsvpForm.attending === 'no' ? 'active' : ''}
                           onClick={() => setRsvpForm({ ...rsvpForm, attending: 'no' })}
                         >
-                          Regretfully decline
+                          <span>Regretfully</span>
+                          <small>Decline</small>
                         </button>
                       </div>
-                    </div>
-
-                    <div className="fountain-field fountain-field-full">
-                      <label htmlFor="fountain-rsvp-message">Message <span>(optional)</span></label>
+                    </fieldset>
+                    <label className="fountain-rsvp-panel-field" htmlFor="fountain-rsvp-message">
+                      <span>Optional message</span>
                       <textarea
                         id="fountain-rsvp-message"
-                        rows={4}
+                        rows={3}
                         value={rsvpForm.message}
                         onChange={event => setRsvpForm({ ...rsvpForm, message: event.target.value })}
-                        placeholder="Share a wish, a memory, or a song request..."
+                        placeholder="Share any special notes or song requests..."
                       />
-                    </div>
-                  </div>
-
-                  {rsvpError && <p className="fountain-rsvp-error">{rsvpError}</p>}
-                  <button type="submit" className="fountain-submit">
-                    <span>Send Response</span>
-                  </button>
-                </motion.form>
-              ) : (
-                <motion.div
-                  key="rsvp-success"
-                  className="fountain-rsvp-card fountain-rsvp-success"
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.45 }}
-                >
-                  <span>Response received</span>
-                  <h3>Thank you, {rsvpForm.guestName}</h3>
-                  <p>Your reply has been sent to the couple. We cannot wait to celebrate together.</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </section>
+                    </label>
+                    {rsvpError && <p className="fountain-rsvp-panel-error">{rsvpError}</p>}
+                    <button type="submit" className="fountain-rsvp-panel-submit">
+                      Send Response
+                    </button>
+                  </motion.form>
+                ) : (
+                  <motion.div
+                    key="rsvp-success"
+                    className="fountain-rsvp-panel-success"
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.45 }}
+                  >
+                    <span>Response received</span>
+                    <h3>Thank you, {rsvpForm.guestName}</h3>
+                    <p>Your reply has been sent to the couple. We cannot wait to celebrate together.</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </section>
+        </>
       )}
 
       {isReferenceDemo && order.galleryImages?.length ? (
@@ -473,7 +470,6 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
         <div className="fountain-footer-inner">
           <p className="fountain-reception">with love</p>
           <h2>{name1} <span>&amp;</span> {name2}</h2>
-          <FlourishSvg className="fountain-section-divider" />
           <p>Thank you for being part of our beginning</p>
         </div>
       </footer>
@@ -481,16 +477,34 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
   );
 }
 
-function SectionTitle({ eyebrow, title, script, light = false }) {
+function SectionTitle({ title }) {
   return (
-    <div className={`fountain-section-title${light ? ' fountain-section-title-light' : ''}`}>
-      <span>{eyebrow}</span>
-      <h2>
-        {title}
-        {script && <span className="script">{script}</span>}
-      </h2>
-      <FlourishSvg className="fountain-section-divider" />
+    <div className="fountain-section-title">
+      <img src={sectionSeparator} alt="" aria-hidden="true" />
+      <h2>{title}</h2>
     </div>
+  );
+}
+
+function CoupleMessageSection({ message, name1, name2 }) {
+  return (
+    <section className="fountain-section fountain-message-section">
+      <SectionTitle title="A Note" />
+      <motion.div
+        className="fountain-envelope"
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <img className="fountain-envelope-image" src={envelopeMessage} alt="" aria-hidden="true" />
+        <article className="fountain-envelope-copy">
+          <span>From our hearts</span>
+          <p>{message}</p>
+          <strong>{name1} <i>&amp;</i> {name2}</strong>
+        </article>
+      </motion.div>
+    </section>
   );
 }
 
@@ -509,9 +523,10 @@ function StorySection({ milestones, images }) {
     : milestones.map((milestone) => ({ ...milestone, src: '' }));
 
   return (
-    <section className="fountain-section fountain-story-section">
-      <SectionTitle eyebrow="Our Story" title="The Path" script="To Forever" />
-      <div className="fountain-story-grid">
+    <>
+      <section className="fountain-section fountain-story-section">
+        <SectionTitle title="Story" />
+        <div className="fountain-story-grid">
         {items.map((item, index) => (
           <motion.article
             key={index}
@@ -535,8 +550,9 @@ function StorySection({ milestones, images }) {
             )}
           </motion.article>
         ))}
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -713,11 +729,10 @@ function GallerySection({ images }) {
   });
 
   return (
-    <section className="fountain-gallery-section">
-      <div className="fountain-gallery-header">
-        <h2>Memories</h2>
-      </div>
-      <div className="fountain-gallery-viewport">
+    <>
+      <section className="fountain-gallery-section">
+        <SectionTitle title="Memories" />
+        <div className="fountain-gallery-viewport">
         <div
           className={`fountain-gallery-row${unitImages.length ? ' fountain-gallery-row-loop' : ''}`}
           ref={galleryRowRef}
@@ -733,7 +748,8 @@ function GallerySection({ images }) {
             </div>
           ))}
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

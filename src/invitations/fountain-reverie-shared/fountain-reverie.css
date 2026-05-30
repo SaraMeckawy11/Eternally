@@ -1897,3 +1897,1460 @@
 
 /* Variant 2 intentionally has no hero-text overrides: it shares V1's art and
    therefore V1's monogram / names / details spacing rhythm. */
+
+/* =====================================================================
+   Fountain Reverie - unified reference-inspired section styling.
+   The supplied PNGs remain visual references; the live invitation keeps
+   responsive HTML sections and echoes their ivory, bronze, olive, and blush
+   watercolor language throughout.
+   ===================================================================== */
+.fountain-theme {
+  --fountain-ink: #66562f;
+  --fountain-ink-dark: #4f421f;
+  --fountain-gold: #92763e;
+  --fountain-gold-soft: #b9a069;
+  --fountain-bronze: #806937;
+  --fountain-olive: #777943;
+  --fountain-sage: #aab08b;
+  --fountain-blush: #efd6c9;
+  --fountain-paper: #fff9ec;
+  --fountain-ivory: #fffdf6;
+  --fountain-mist: #e5e8d7;
+  --fountain-shadow: rgba(87, 70, 32, 0.12);
+  background:
+    radial-gradient(circle at 14% 7%, rgba(237, 207, 190, 0.32), transparent 22rem),
+    radial-gradient(circle at 88% 16%, rgba(153, 164, 121, 0.22), transparent 25rem),
+    radial-gradient(circle at 12% 66%, rgba(165, 172, 126, 0.16), transparent 26rem),
+    radial-gradient(circle at 88% 86%, rgba(239, 214, 201, 0.28), transparent 24rem),
+    linear-gradient(180deg, #fffaf0 0%, #f4ead5 48%, #fff9ee 100%);
+}
+
+.fountain-countdown,
+.fountain-couple-section,
+.fountain-story-section,
+.fountain-event-section,
+.fountain-rsvp-section,
+.fountain-gallery-section,
+.fountain-footer {
+  background: transparent;
+}
+
+.fountain-section-title {
+  margin-bottom: clamp(28px, 4vw, 42px);
+}
+
+.fountain-section-title h2 {
+  margin-top: 0;
+  color: var(--fountain-bronze);
+  font-family: var(--font-script);
+  font-size: clamp(2.5rem, 7vw, 4.7rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.92;
+}
+
+.fountain-countdown {
+  min-height: 0;
+  padding-top: clamp(70px, 9vw, 104px);
+  padding-bottom: clamp(86px, 10vw, 118px);
+}
+
+.fountain-count-grid {
+  gap: clamp(10px, 2.5vw, 20px);
+  width: min(760px, 100%);
+  margin-top: 18px;
+}
+
+.fountain-count-unit {
+  min-height: clamp(112px, 17vw, 148px);
+  padding: 20px 8px 16px;
+  border: 1px solid rgba(128, 105, 55, 0.36);
+  border-radius: 42% 42% 8px 8px / 26% 26% 8px 8px;
+  background:
+    radial-gradient(ellipse at 50% 6%, rgba(255, 255, 255, 0.84), transparent 58%),
+    linear-gradient(180deg, rgba(255, 253, 246, 0.92), rgba(239, 224, 196, 0.72));
+  box-shadow:
+    0 18px 38px rgba(87, 70, 32, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.fountain-count-unit::before {
+  inset: 7px;
+  border-color: rgba(128, 105, 55, 0.2);
+  border-radius: 40% 40% 5px 5px / 22% 22% 5px 5px;
+}
+
+.fountain-count-unit strong {
+  color: var(--fountain-bronze);
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6.2vw, 4rem);
+  font-weight: 500;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.fountain-count-unit span {
+  color: var(--fountain-bronze);
+  font-family: var(--font-display);
+  font-size: clamp(0.52rem, 1.3vw, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+}
+
+.fountain-couple-grid,
+.fountain-venue-grid,
+.fountain-story-grid {
+  position: relative;
+  z-index: 1;
+}
+
+.fountain-photo-frame {
+  border: 1px solid rgba(128, 105, 55, 0.36);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.98), rgba(243, 228, 202, 0.88));
+  box-shadow:
+    0 22px 48px rgba(87, 70, 32, 0.13),
+    0 0 0 7px rgba(255, 250, 238, 0.58);
+}
+
+.fountain-photo-frame::after {
+  inset: 7px;
+  border-color: rgba(128, 105, 55, 0.28);
+  border-radius: 2px;
+}
+
+.fountain-story-card {
+  position: relative;
+  padding: clamp(18px, 2.6vw, 26px);
+  border: 1px solid rgba(128, 105, 55, 0.34);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 92% 6%, rgba(239, 214, 201, 0.28), transparent 10rem),
+    linear-gradient(180deg, rgba(255, 253, 246, 0.96), rgba(243, 228, 202, 0.8));
+  box-shadow: 0 22px 54px rgba(87, 70, 32, 0.12);
+}
+
+.fountain-story-card::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(128, 105, 55, 0.16);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.fountain-story-text {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(22px, 3vw, 30px);
+}
+
+.fountain-story-text span {
+  color: var(--fountain-bronze);
+  font-family: var(--font-display);
+  font-size: clamp(0.7rem, 1.8vw, 0.84rem);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-transform: uppercase;
+}
+
+.fountain-story-text h3 {
+  margin-top: 8px;
+  color: var(--fountain-bronze);
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 400;
+  line-height: 0.96;
+}
+
+.fountain-story-text p {
+  color: rgba(79, 66, 31, 0.76);
+  font-family: var(--font-display);
+  font-size: clamp(0.94rem, 1.8vw, 1.06rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.48;
+}
+
+.fountain-event-layout {
+  width: min(680px, 100%);
+}
+
+.fountain-event-card {
+  padding: clamp(34px, 5vw, 54px);
+  border: 1px solid rgba(128, 105, 55, 0.42);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(162, 171, 131, 0.26), transparent 18rem),
+    radial-gradient(circle at 0% 100%, rgba(239, 214, 201, 0.35), transparent 17rem),
+    linear-gradient(180deg, rgba(255, 253, 246, 0.98), rgba(243, 228, 202, 0.86));
+  box-shadow: 0 28px 70px rgba(87, 70, 32, 0.15);
+}
+
+.fountain-event-card::before,
+.fountain-rsvp-card::before,
+.fountain-rsvp-date-card::before {
+  inset: 10px;
+  border-color: rgba(128, 105, 55, 0.22);
+  border-radius: 2px;
+}
+
+.fountain-event-card h3 {
+  margin-bottom: 28px;
+  color: var(--fountain-bronze);
+  font-family: var(--font-script);
+  font-size: clamp(2.7rem, 6vw, 4.5rem);
+  font-weight: 400;
+  line-height: 0.94;
+  text-align: center;
+}
+
+.fountain-event-card dl {
+  gap: 18px;
+  text-align: center;
+}
+
+.fountain-event-card dl > div {
+  padding-bottom: 8px;
+}
+
+.fountain-event-card dt {
+  color: var(--fountain-bronze);
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+}
+
+.fountain-event-card dd {
+  margin-top: 7px;
+  color: var(--fountain-ink-dark);
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.4vw, 1.32rem);
+  font-weight: 600;
+}
+
+.fountain-map {
+  height: clamp(220px, 40vw, 280px);
+  margin-top: 28px;
+  border: 1px solid rgba(128, 105, 55, 0.36);
+  border-radius: 3px;
+  box-shadow: 0 12px 26px rgba(87, 70, 32, 0.1);
+}
+
+.fountain-map iframe {
+  filter: sepia(0.22) saturate(0.78) contrast(0.9);
+}
+
+.fountain-rsvp-inner {
+  width: min(1040px, 100%);
+}
+
+.fountain-rsvp-intro {
+  position: relative;
+  padding: 24px 8px;
+}
+
+.fountain-rsvp-intro h2 {
+  margin: 6px 0 12px;
+  color: var(--fountain-bronze);
+  font-family: var(--font-script);
+  font-size: clamp(3.3rem, 7vw, 5.2rem);
+  line-height: 0.9;
+}
+
+.fountain-rsvp-intro p {
+  color: rgba(79, 66, 31, 0.78);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.48;
+}
+
+.fountain-rsvp-date-card {
+  border: 1px solid rgba(128, 105, 55, 0.34);
+  border-radius: 3px;
+  background: rgba(255, 253, 246, 0.5);
+  box-shadow: 0 16px 34px rgba(87, 70, 32, 0.08);
+}
+
+.fountain-rsvp-date-card span {
+  color: var(--fountain-bronze);
+}
+
+.fountain-rsvp-date-card strong {
+  color: var(--fountain-ink-dark);
+  font-family: var(--font-display);
+}
+
+.fountain-rsvp-card {
+  border: 1px solid rgba(128, 105, 55, 0.4);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(162, 171, 131, 0.24), transparent 16rem),
+    radial-gradient(circle at 0% 100%, rgba(239, 214, 201, 0.3), transparent 16rem),
+    linear-gradient(180deg, rgba(255, 253, 246, 0.98), rgba(243, 228, 202, 0.88));
+  box-shadow: 0 30px 76px rgba(87, 70, 32, 0.15);
+}
+
+.fountain-field label {
+  color: var(--fountain-bronze);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+}
+
+.fountain-rsvp-card input,
+.fountain-rsvp-card textarea {
+  border: 1px solid rgba(128, 105, 55, 0.3);
+  border-radius: 3px;
+  background: rgba(255, 253, 246, 0.58);
+  color: var(--fountain-ink-dark);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.fountain-rsvp-card input:focus,
+.fountain-rsvp-card textarea:focus {
+  border-color: rgba(128, 105, 55, 0.72);
+  background: rgba(255, 253, 246, 0.94);
+  box-shadow: 0 0 0 4px rgba(128, 105, 55, 0.1);
+}
+
+.fountain-rsvp-toggle button {
+  border: 1px solid rgba(128, 105, 55, 0.38);
+  border-radius: 3px;
+  background: rgba(255, 253, 246, 0.54);
+  color: var(--fountain-bronze);
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  letter-spacing: 0.11em;
+}
+
+.fountain-rsvp-toggle button.active,
+.fountain-submit {
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(255, 253, 247, 0.2), transparent 58%),
+    linear-gradient(135deg, #76622f 0%, #94783e 56%, #b29b61 100%);
+}
+
+.fountain-submit {
+  border-radius: 3px;
+  font-family: var(--font-display);
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+}
+
+.fountain-gallery-header h2 {
+  color: var(--fountain-bronze);
+  font-family: var(--font-script);
+  font-size: clamp(3rem, 8vw, 5rem);
+  line-height: 0.94;
+}
+
+.fountain-gallery-header h2::before,
+.fountain-gallery-header h2::after {
+  content: none;
+}
+
+.fountain-gallery-card {
+  border: 1px solid rgba(128, 105, 55, 0.32);
+  border-radius: 4px;
+  background: rgba(255, 253, 246, 0.94);
+  box-shadow: 0 20px 44px rgba(87, 70, 32, 0.14);
+}
+
+.fountain-footer {
+  background: rgba(255, 250, 238, 0.34);
+}
+
+.fountain-footer::before {
+  content: none;
+}
+
+.fountain-footer h2 {
+  color: var(--fountain-bronze);
+  font-size: clamp(3.1rem, 7vw, 5rem);
+}
+
+.fountain-footer p:last-child {
+  color: rgba(79, 66, 31, 0.76);
+  font-family: var(--font-display);
+}
+
+@media (max-width: 680px) {
+  .fountain-section,
+  .fountain-rsvp-section,
+  .fountain-gallery-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .fountain-countdown {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .fountain-count-grid {
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .fountain-count-unit {
+    min-height: 98px;
+    padding: 16px 3px 11px;
+  }
+
+  .fountain-count-unit strong {
+    font-size: clamp(1.75rem, 8vw, 2.4rem);
+  }
+
+  .fountain-count-unit span {
+    font-size: 0.48rem;
+    letter-spacing: 0.13em;
+    text-indent: 0.13em;
+  }
+
+  .fountain-event-card,
+  .fountain-rsvp-card {
+    padding: 30px 20px;
+  }
+
+  .fountain-rsvp-intro {
+    padding: 0 4px 14px;
+    text-align: center;
+  }
+
+}
+
+/* Refined section rhythm ---------------------------------------------- */
+.fountain-theme {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 5% 12%, rgba(239, 215, 205, 0.34), transparent 31rem),
+    radial-gradient(ellipse at 96% 27%, rgba(190, 200, 163, 0.24), transparent 33rem),
+    radial-gradient(ellipse at 9% 61%, rgba(204, 211, 176, 0.2), transparent 34rem),
+    radial-gradient(ellipse at 92% 88%, rgba(241, 220, 207, 0.32), transparent 33rem),
+    linear-gradient(180deg, #fffdf8 0%, #fbf5e9 38%, #f7eedf 68%, #fffbf3 100%);
+}
+
+.fountain-countdown,
+.fountain-section,
+.fountain-rsvp-section,
+.fountain-gallery-section,
+.fountain-footer {
+  position: relative;
+}
+
+.fountain-countdown,
+.fountain-story-section,
+.fountain-rsvp-section {
+  background: linear-gradient(180deg, rgba(255, 254, 250, 0.5), rgba(247, 238, 221, 0.24));
+}
+
+.fountain-couple-section,
+.fountain-event-section,
+.fountain-gallery-section {
+  background: linear-gradient(180deg, rgba(247, 238, 221, 0.2), rgba(255, 254, 250, 0.48));
+}
+
+.fountain-countdown::before,
+.fountain-section::before,
+.fountain-rsvp-section::before,
+.fountain-gallery-section::before,
+.fountain-footer::before {
+  content: none;
+}
+
+.fountain-section-separator {
+  position: relative;
+  z-index: 4;
+  height: clamp(34px, 5vw, 54px);
+  margin: clamp(-10px, -1.2vw, -4px) 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fountain-section-separator img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  width: min(840px, 128vw);
+  height: auto;
+  transform: translate(-50%, -49.4%);
+  filter: drop-shadow(0 6px 12px rgba(128, 105, 55, 0.13));
+}
+
+.fountain-section-title h2,
+.fountain-gallery-header h2 {
+  color: #73784e;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.fountain-count-unit {
+  border-color: rgba(151, 130, 79, 0.34);
+  background:
+    radial-gradient(ellipse at 50% 4%, rgba(255, 255, 255, 0.94), transparent 60%),
+    linear-gradient(180deg, rgba(255, 254, 249, 0.97), rgba(241, 231, 207, 0.7));
+  box-shadow:
+    0 14px 28px rgba(94, 78, 42, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.fountain-story-card,
+.fountain-event-card {
+  border-color: rgba(151, 130, 79, 0.32);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(202, 211, 175, 0.2), transparent 15rem),
+    radial-gradient(circle at 0% 100%, rgba(242, 221, 211, 0.24), transparent 14rem),
+    linear-gradient(180deg, rgba(255, 254, 250, 0.97), rgba(246, 237, 218, 0.82));
+  box-shadow: 0 18px 42px rgba(94, 78, 42, 0.1);
+}
+
+.fountain-photo-frame,
+.fountain-gallery-card {
+  border-color: rgba(151, 130, 79, 0.3);
+  background: rgba(255, 254, 250, 0.94);
+  box-shadow:
+    0 16px 34px rgba(94, 78, 42, 0.1),
+    0 0 0 6px rgba(255, 252, 244, 0.56);
+}
+
+.fountain-event-card h3,
+.fountain-story-text h3 {
+  color: #73784e;
+}
+
+.fountain-map {
+  border-color: rgba(151, 130, 79, 0.3);
+  box-shadow: 0 10px 22px rgba(94, 78, 42, 0.08);
+}
+
+.fountain-footer {
+  background: linear-gradient(180deg, rgba(255, 254, 250, 0.46), rgba(241, 231, 210, 0.54));
+}
+
+/* Recreated RSVP panel ------------------------------------------------ */
+.fountain-rsvp-section {
+  padding: clamp(64px, 9vw, 110px) 16px clamp(76px, 10vw, 124px);
+  overflow: hidden;
+}
+
+.fountain-rsvp-panel {
+  position: relative;
+  width: min(660px, 100%);
+  margin: 0 auto;
+  padding: clamp(194px, 31vw, 246px) clamp(24px, 6vw, 62px) clamp(30px, 5vw, 50px);
+  border: 1px solid rgba(184, 145, 69, 0.82);
+  border-radius: 48% 48% 4px 4px / 13% 13% 4px 4px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.9), transparent 34%),
+    linear-gradient(180deg, rgba(255, 253, 247, 0.99), rgba(249, 241, 226, 0.98));
+  box-shadow:
+    0 26px 60px rgba(87, 70, 32, 0.14),
+    0 0 0 8px rgba(241, 231, 210, 0.88),
+    0 0 0 9px rgba(184, 145, 69, 0.42),
+    inset 0 0 0 7px rgba(255, 253, 247, 0.86),
+    inset 0 0 0 8px rgba(184, 145, 69, 0.4);
+}
+
+.fountain-rsvp-panel-header {
+  position: absolute;
+  left: 12%;
+  top: clamp(24px, 4vw, 38px);
+  width: 76%;
+  text-align: center;
+}
+
+.fountain-rsvp-panel-ornament {
+  display: block;
+  width: min(188px, 48%);
+  aspect-ratio: 152 / 22;
+  margin: 0 auto 8px;
+  background: url("../../assets/Fountain Reverie/fountain_separator_components/divider_top.png") center / contain no-repeat;
+  opacity: 0.8;
+}
+
+.fountain-rsvp-panel-header h2 {
+  margin: 0;
+  color: #59603e;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 10vw, 6rem);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  line-height: 0.92;
+  text-indent: 0.22em;
+}
+
+.fountain-rsvp-panel-header strong {
+  display: block;
+  margin-top: 0.48em;
+  color: #59603e;
+  font-family: var(--font-display);
+  font-size: clamp(0.7rem, 2vw, 0.94rem);
+  font-weight: 600;
+  letter-spacing: 0.38em;
+  text-indent: 0.38em;
+  text-transform: uppercase;
+}
+
+.fountain-rsvp-panel-header p {
+  margin: 0.95em 0 0;
+  color: rgba(79, 66, 31, 0.82);
+  font-family: var(--font-display);
+  font-size: clamp(0.74rem, 2vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1.28;
+}
+
+.fountain-rsvp-panel-form {
+  position: relative;
+  display: grid;
+  gap: clamp(12px, 2vw, 18px);
+}
+
+.fountain-rsvp-panel-field,
+.fountain-rsvp-panel-choice {
+  position: relative;
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.fountain-rsvp-panel-field:not(:first-child)::before,
+.fountain-rsvp-panel-choice::before,
+.fountain-rsvp-panel-submit::before {
+  content: "";
+  display: block;
+  width: min(146px, 34%);
+  aspect-ratio: 146 / 35;
+  margin: -8px auto 0;
+  background: url("../../assets/Fountain Reverie/fountain_separator_components/divider_middle2.png") center / contain no-repeat;
+  opacity: 0.68;
+}
+
+.fountain-rsvp-panel-field span,
+.fountain-rsvp-panel-choice legend {
+  color: #59603e;
+  font-family: var(--font-display);
+  font-size: clamp(0.7rem, 1.9vw, 0.92rem);
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.fountain-rsvp-panel-field input,
+.fountain-rsvp-panel-field textarea {
+  width: 100%;
+  padding: 11px 16px;
+  border: 1px solid rgba(184, 145, 69, 0.52);
+  border-radius: 4px;
+  outline: none;
+  background: rgba(255, 253, 247, 0.58);
+  box-shadow: inset 0 0 0 4px rgba(255, 253, 247, 0.6), inset 0 0 0 5px rgba(184, 145, 69, 0.18);
+  color: var(--fountain-ink-dark);
+  font-family: var(--font-display);
+  font-size: clamp(0.94rem, 2.6vw, 1.2rem);
+  font-weight: 500;
+}
+
+.fountain-rsvp-panel-field textarea {
+  min-height: 88px;
+  resize: none;
+}
+
+.fountain-rsvp-panel-field input::placeholder,
+.fountain-rsvp-panel-field textarea::placeholder {
+  color: rgba(79, 66, 31, 0.46);
+  font-style: italic;
+}
+
+.fountain-rsvp-panel-field input:focus,
+.fountain-rsvp-panel-field textarea:focus {
+  border-color: rgba(128, 105, 55, 0.78);
+  background: rgba(255, 253, 247, 0.9);
+  box-shadow: 0 0 0 4px rgba(128, 105, 55, 0.1);
+}
+
+.fountain-rsvp-panel-choice > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.fountain-rsvp-panel-choice button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.08em;
+  min-height: 66px;
+  border: 1px solid rgba(184, 145, 69, 0.52);
+  border-radius: 4px;
+  background: rgba(255, 253, 247, 0.5);
+  box-shadow: inset 0 0 0 4px rgba(255, 253, 247, 0.56), inset 0 0 0 5px rgba(184, 145, 69, 0.16);
+  color: var(--fountain-ink-dark);
+  font-family: var(--font-display);
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fountain-rsvp-panel-choice button::before {
+  content: "\2767";
+  display: block;
+  color: var(--fountain-olive);
+  font-size: clamp(0.78rem, 2.7vw, 1.14rem);
+  line-height: 0.8;
+}
+
+.fountain-rsvp-panel-choice button span {
+  font-size: clamp(0.74rem, 2.3vw, 1.06rem);
+  letter-spacing: 0.08em;
+}
+
+.fountain-rsvp-panel-choice button small {
+  font-size: clamp(0.62rem, 1.9vw, 0.88rem);
+  letter-spacing: 0.16em;
+}
+
+.fountain-rsvp-panel-choice button.active {
+  background: rgba(167, 176, 136, 0.3);
+  box-shadow: inset 0 0 0 1px rgba(128, 105, 55, 0.42);
+}
+
+.fountain-rsvp-panel-error {
+  margin: 0;
+  color: #8b3d34;
+  font-size: clamp(0.68rem, 2vw, 0.84rem);
+  font-weight: 700;
+  text-align: center;
+}
+
+.fountain-rsvp-panel-submit {
+  position: relative;
+  width: min(420px, 84%);
+  min-height: 44px;
+  margin: 2px auto 0;
+  border: 1px solid rgba(79, 92, 57, 0.9);
+  border-radius: 4px;
+  background: linear-gradient(180deg, #939975, #777e5d);
+  box-shadow: inset 0 0 0 4px rgba(255, 253, 247, 0.48), inset 0 0 0 5px rgba(79, 92, 57, 0.7);
+  color: #fffaf0;
+  font-family: var(--font-display);
+  font-size: clamp(0.76rem, 2.4vw, 1.08rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.fountain-rsvp-panel-submit::before {
+  position: absolute;
+  left: 50%;
+  top: -29px;
+  transform: translateX(-50%);
+}
+
+.fountain-rsvp-panel-submit:hover,
+.fountain-rsvp-panel-submit:focus-visible {
+  background: linear-gradient(180deg, #858d6b, #69714f);
+  outline: 1px solid rgba(255, 250, 240, 0.7);
+  outline-offset: -4px;
+}
+
+.fountain-rsvp-panel-success {
+  padding: clamp(34px, 7vw, 58px);
+  border: 1px solid rgba(128, 105, 55, 0.34);
+  background: rgba(255, 253, 247, 0.9);
+  color: var(--fountain-ink-dark);
+  font-family: var(--font-display);
+  text-align: center;
+}
+
+.fountain-rsvp-panel-success span {
+  color: var(--fountain-bronze);
+  font-size: clamp(0.56rem, 2cqw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.fountain-rsvp-panel-success h3 {
+  margin: 0.45em 0 0;
+  color: var(--fountain-bronze);
+  font-family: var(--font-script);
+  font-size: clamp(1.8rem, 6.5cqw, 3.1rem);
+  font-weight: 400;
+  line-height: 0.92;
+}
+
+.fountain-rsvp-panel-success p {
+  margin: 0.75em 0 0;
+  font-size: clamp(0.68rem, 2.35cqw, 0.94rem);
+  line-height: 1.3;
+}
+
+@media (max-width: 520px) {
+  .fountain-rsvp-section {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .fountain-rsvp-panel {
+    padding: 174px 20px 24px;
+    border-radius: 46% 46% 4px 4px / 10% 10% 4px 4px;
+  }
+
+  .fountain-rsvp-panel-header {
+    top: 27px;
+  }
+
+  .fountain-rsvp-panel-header h2 {
+    font-size: clamp(3rem, 16vw, 4.6rem);
+  }
+
+  .fountain-rsvp-panel-header p {
+    font-size: 0.72rem;
+  }
+
+  .fountain-rsvp-panel-choice button {
+    min-height: 60px;
+  }
+}
+
+/* Transparent decorative component pass -------------------------------- */
+.fountain-theme {
+  background:
+    radial-gradient(ellipse at 8% 14%, rgba(232, 215, 195, 0.28), transparent 34rem),
+    radial-gradient(ellipse at 94% 37%, rgba(180, 192, 161, 0.2), transparent 36rem),
+    radial-gradient(ellipse at 12% 77%, rgba(214, 224, 199, 0.18), transparent 34rem),
+    linear-gradient(180deg, #fffdf8 0%, #faf5ea 46%, #f6efe2 72%, #fffcf5 100%);
+}
+
+.fountain-countdown,
+.fountain-section,
+.fountain-rsvp-section,
+.fountain-gallery-section,
+.fountain-footer {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.fountain-countdown > *,
+.fountain-section > *,
+.fountain-rsvp-section > *,
+.fountain-gallery-section > *,
+.fountain-footer > * {
+  position: relative;
+  z-index: 2;
+}
+
+.fountain-countdown,
+.fountain-story-section,
+.fountain-rsvp-section {
+  background: linear-gradient(180deg, rgba(255, 253, 248, 0.9), rgba(245, 237, 222, 0.78));
+}
+
+.fountain-couple-section,
+.fountain-event-section,
+.fountain-gallery-section {
+  background: linear-gradient(180deg, rgba(244, 237, 222, 0.84), rgba(255, 253, 248, 0.92));
+}
+
+.fountain-section-separator {
+  height: 0;
+  margin: 0;
+  overflow: visible;
+}
+
+.fountain-section-separator img {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: min(430px, 82vw);
+  height: auto;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 5px 9px rgba(128, 105, 55, 0.11));
+}
+
+.fountain-section-title {
+  display: grid;
+  box-sizing: border-box;
+  width: min(390px, 92vw);
+  max-width: none;
+  min-height: 86px;
+  margin-bottom: clamp(30px, 5vw, 48px);
+  padding: 18px 48px 20px;
+  place-items: center;
+  background: none;
+  filter: drop-shadow(0 9px 16px rgba(94, 78, 42, 0.08));
+}
+
+.fountain-section-title h2 {
+  margin: 0;
+  color: #657047;
+  font-size: clamp(1.82rem, 5vw, 2.72rem);
+  font-weight: 500;
+  letter-spacing: 0.045em;
+}
+
+.fountain-countdown {
+  padding-top: clamp(52px, 7vw, 82px);
+  padding-bottom: clamp(76px, 9vw, 108px);
+}
+
+.fountain-count-grid {
+  width: min(720px, 100%);
+  gap: clamp(8px, 2vw, 16px);
+}
+
+.fountain-count-unit {
+  min-height: clamp(108px, 16vw, 142px);
+  padding: 18px 8px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: url("../../assets/Fountain Reverie/decorative_components/elegant_gold_accented_minimal_card_design_transparent.png") center / 100% 100% no-repeat;
+  box-shadow: none;
+  filter: drop-shadow(0 13px 17px rgba(94, 78, 42, 0.1));
+}
+
+.fountain-count-unit::before {
+  content: none;
+}
+
+.fountain-couple-section::after,
+.fountain-story-section::after,
+.fountain-event-section::after,
+.fountain-gallery-section::after {
+  content: "";
+  position: absolute;
+  top: 7%;
+  bottom: 5%;
+  width: clamp(92px, 13vw, 154px);
+  background: url("../../assets/Fountain Reverie/decorative_components/delicate_floral_vine_with_gold_accents_transparent.png") center / contain no-repeat;
+  opacity: 0.34;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fountain-couple-section::after,
+.fountain-event-section::after {
+  right: clamp(-72px, -4vw, -34px);
+}
+
+.fountain-story-section::after,
+.fountain-gallery-section::after {
+  left: clamp(-72px, -4vw, -34px);
+  transform: scaleX(-1);
+}
+
+.fountain-story-card {
+  border: 0;
+  border-radius: 16px;
+  background: url("../../assets/Fountain Reverie/decorative_components/elegant_gold_accented_minimal_card_design_transparent.png") center / 100% 100% no-repeat;
+  box-shadow: none;
+  filter: drop-shadow(0 18px 21px rgba(94, 78, 42, 0.1));
+}
+
+.fountain-story-card::before {
+  content: none;
+}
+
+.fountain-story-text {
+  padding: clamp(20px, 3vw, 30px) 14px clamp(60px, 6vw, 76px);
+}
+
+.fountain-story-text p {
+  max-width: 30rem;
+  margin: 0.7em auto 0;
+}
+
+.fountain-event-card {
+  overflow: hidden;
+  padding-top: clamp(104px, 10vw, 132px);
+  border-color: rgba(151, 130, 79, 0.2);
+  background:
+    radial-gradient(circle at 88% 10%, rgba(203, 214, 183, 0.2), transparent 16rem),
+    linear-gradient(180deg, rgba(255, 254, 250, 0.98), rgba(246, 238, 222, 0.9));
+}
+
+.fountain-event-card::after,
+.fountain-rsvp-panel::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  background: url("../../assets/Fountain Reverie/decorative_components/elegant_vintage_decorative_frame_transparent.png") center / 100% 100% no-repeat;
+  opacity: 0.88;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fountain-event-card > *,
+.fountain-rsvp-panel > * {
+  position: relative;
+  z-index: 2;
+}
+
+.fountain-rsvp-panel > .fountain-rsvp-panel-header {
+  position: absolute;
+}
+
+.fountain-rsvp-section::before {
+  content: "";
+  position: absolute;
+  left: clamp(-116px, -6vw, -62px);
+  bottom: -18px;
+  width: clamp(210px, 30vw, 360px);
+  aspect-ratio: 793 / 1232;
+  background: url("../../assets/Fountain Reverie/decorative_components/vintage_urn_with_floral_arrangement_transparent.png") center bottom / contain no-repeat;
+  opacity: 0.28;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fountain-rsvp-section::after {
+  content: "";
+  position: absolute;
+  right: clamp(-88px, -5vw, -46px);
+  top: 5%;
+  bottom: 5%;
+  width: clamp(98px, 14vw, 168px);
+  background: url("../../assets/Fountain Reverie/decorative_components/botanical_gold_frame_with_floral_vine_transparent.png") center / contain no-repeat;
+  opacity: 0.32;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fountain-rsvp-panel {
+  width: min(640px, 100%);
+  padding: clamp(186px, 29vw, 226px) clamp(26px, 6vw, 58px) clamp(28px, 4vw, 42px);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.92), transparent 34%),
+    linear-gradient(180deg, rgba(255, 254, 250, 0.99), rgba(248, 240, 226, 0.98));
+}
+
+.fountain-rsvp-panel-ornament {
+  width: min(192px, 52%);
+  aspect-ratio: 1781 / 606;
+  margin-bottom: 7px;
+  background-image: url("../../assets/Fountain Reverie/decorative_components/elegant_vintage_ornamental_flourish_transparent.png");
+}
+
+.fountain-rsvp-panel-field:not(:first-child)::before,
+.fountain-rsvp-panel-choice::before,
+.fountain-rsvp-panel-submit::before {
+  width: min(122px, 30%);
+  aspect-ratio: 1781 / 606;
+  margin-top: -9px;
+  background-image: url("../../assets/Fountain Reverie/decorative_components/elegant_vintage_ornamental_flourish_transparent.png");
+  opacity: 0.54;
+}
+
+.fountain-rsvp-panel-form {
+  gap: clamp(11px, 1.7vw, 15px);
+}
+
+.fountain-rsvp-panel-choice button {
+  min-height: 56px;
+}
+
+.fountain-rsvp-panel-submit {
+  width: min(390px, 88%);
+  min-height: 50px;
+  border: 0;
+  border-radius: 0;
+  background: url("../../assets/Fountain Reverie/decorative_components/ornate_olive_green_vintage_plaque_transparent.png") center / 100% 100% no-repeat;
+  box-shadow: none;
+  filter: drop-shadow(0 8px 10px rgba(79, 92, 57, 0.17));
+}
+
+.fountain-rsvp-panel-submit:hover,
+.fountain-rsvp-panel-submit:focus-visible {
+  background: url("../../assets/Fountain Reverie/decorative_components/ornate_olive_green_vintage_plaque_transparent.png") center / 100% 100% no-repeat;
+  filter: brightness(0.96) drop-shadow(0 8px 10px rgba(79, 92, 57, 0.22));
+}
+
+.fountain-gallery-header h2::after {
+  content: "";
+  display: block;
+  width: min(250px, 56vw);
+  aspect-ratio: 1781 / 606;
+  margin: 8px auto 0;
+  background: url("../../assets/Fountain Reverie/decorative_components/elegant_vintage_ornamental_flourish_transparent.png") center / contain no-repeat;
+  opacity: 0.72;
+}
+
+.fountain-footer {
+  min-height: clamp(330px, 47vw, 510px);
+  padding-top: clamp(56px, 8vw, 90px);
+  padding-bottom: clamp(174px, 26vw, 290px);
+  background: linear-gradient(180deg, rgba(255, 253, 248, 0.94), rgba(241, 233, 216, 0.92));
+}
+
+.fountain-footer::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: min(880px, 104vw);
+  aspect-ratio: 1444 / 762;
+  background: url("../../assets/Fountain Reverie/decorative_components/symmetrical_garden_fountain_with_floral_accents_transparent.png") center bottom / contain no-repeat;
+  opacity: 0.9;
+  pointer-events: none;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+@media (max-width: 680px) {
+  .fountain-section-title {
+    width: min(330px, calc(100% - 24px));
+    min-height: 72px;
+    padding: 14px 28px 16px;
+  }
+
+  .fountain-count-grid {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .fountain-count-unit {
+    min-width: 0;
+    min-height: 96px;
+    padding: 14px 3px 11px;
+  }
+
+  .fountain-count-unit span {
+    font-size: 0.43rem;
+    letter-spacing: 0.08em;
+    text-indent: 0.08em;
+  }
+
+  .fountain-couple-section::after,
+  .fountain-story-section::after,
+  .fountain-event-section::after,
+  .fountain-gallery-section::after,
+  .fountain-rsvp-section::after {
+    width: 94px;
+    opacity: 0.2;
+  }
+
+  .fountain-rsvp-section::before {
+    left: -88px;
+    width: 218px;
+    opacity: 0.18;
+  }
+
+  .fountain-footer {
+    min-height: 320px;
+    padding-bottom: 154px;
+  }
+}
+
+@media (max-width: 520px) {
+  .fountain-rsvp-panel {
+    padding: 168px 20px 24px;
+    border-radius: 18px;
+  }
+
+  .fountain-rsvp-panel-choice button {
+    min-height: 52px;
+  }
+
+  .fountain-rsvp-panel-submit {
+    min-height: 46px;
+  }
+}
+
+/* Open section composition --------------------------------------------- */
+.fountain-section-title {
+  display: flex;
+  width: min(460px, calc(100vw - 40px));
+  min-height: 0;
+  margin: 0 auto clamp(28px, 4vw, 46px);
+  padding: 0;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  filter: none;
+}
+
+.fountain-section-title h2 {
+  margin: 0;
+  color: #69724a;
+  font-family: var(--font-script);
+  font-size: clamp(2.8rem, 6vw, 4.4rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+
+.fountain-section-title img {
+  display: block;
+  width: min(290px, 68vw);
+  height: auto;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 5px 8px rgba(128, 105, 55, 0.1));
+}
+
+.fountain-story-card {
+  overflow: hidden;
+  border: 1px solid rgba(151, 130, 79, 0.24);
+  border-radius: 6px;
+  background: rgba(255, 253, 248, 0.72);
+  box-shadow: 0 18px 38px rgba(94, 78, 42, 0.08);
+  filter: none;
+}
+
+.fountain-story-text {
+  padding: clamp(20px, 3vw, 28px) clamp(18px, 3vw, 26px) clamp(22px, 3vw, 30px);
+}
+
+.fountain-story-text p {
+  max-width: 30rem;
+  margin: 0.7em auto 0;
+}
+
+.fountain-event-layout {
+  width: min(760px, 100%);
+}
+
+.fountain-event-card {
+  overflow: visible;
+  width: min(680px, 100%);
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 42px);
+  border: 1px solid rgba(151, 130, 79, 0.26);
+  border-radius: 6px;
+  background: rgba(255, 253, 248, 0.7);
+  box-shadow:
+    0 20px 42px rgba(94, 78, 42, 0.08),
+    inset 0 0 0 6px rgba(255, 253, 248, 0.64),
+    inset 0 0 0 7px rgba(151, 130, 79, 0.1);
+}
+
+.fountain-event-card::before,
+.fountain-event-card::after,
+.fountain-rsvp-panel::after {
+  content: none;
+}
+
+.fountain-event-card dl {
+  width: min(620px, 100%);
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 30px);
+  border-top: 0;
+  border-bottom: 1px solid rgba(151, 130, 79, 0.24);
+  background: transparent;
+}
+
+.fountain-map {
+  width: min(620px, 100%);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.fountain-rsvp-section {
+  padding-top: clamp(72px, 9vw, 106px);
+}
+
+.fountain-rsvp-panel {
+  width: min(620px, calc(100vw - 32px));
+  padding: clamp(30px, 5vw, 48px) clamp(20px, 5vw, 50px) clamp(26px, 4vw, 42px);
+  border: 1px solid rgba(151, 130, 79, 0.36);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.84);
+  box-shadow:
+    0 22px 52px rgba(94, 78, 42, 0.1),
+    inset 0 0 0 7px rgba(255, 253, 248, 0.76),
+    inset 0 0 0 8px rgba(151, 130, 79, 0.17);
+}
+
+.fountain-rsvp-panel > .fountain-rsvp-panel-header {
+  position: static;
+  width: 100%;
+  margin-bottom: clamp(24px, 4vw, 34px);
+}
+
+.fountain-rsvp-panel-ornament {
+  display: block;
+  width: min(250px, 64%);
+  height: auto;
+  aspect-ratio: auto;
+  margin: 0 auto 5px;
+  background: none;
+  opacity: 0.86;
+}
+
+.fountain-rsvp-panel-header h2 {
+  font-size: clamp(2.8rem, 8vw, 5rem);
+}
+
+.fountain-rsvp-panel-field:not(:first-child)::before,
+.fountain-rsvp-panel-choice::before,
+.fountain-rsvp-panel-submit::before {
+  content: none;
+}
+
+.fountain-rsvp-panel-form {
+  gap: clamp(14px, 2vw, 18px);
+}
+
+.fountain-message-section {
+  overflow: hidden;
+  padding: clamp(78px, 10vw, 124px) 20px clamp(92px, 12vw, 142px);
+  background:
+    radial-gradient(ellipse at 10% 78%, rgba(220, 228, 205, 0.22), transparent 24rem),
+    linear-gradient(180deg, rgba(255, 253, 248, 0.92), rgba(243, 235, 218, 0.8));
+}
+
+.fountain-message-section::after {
+  content: "";
+  position: absolute;
+  right: clamp(-76px, -4vw, -34px);
+  bottom: -20px;
+  width: clamp(190px, 27vw, 320px);
+  aspect-ratio: 869 / 1194;
+  background: url("../../assets/Fountain Reverie/decorative_components/ornate_urn_with_delicate_floral_arrangement_transparent.png") center bottom / contain no-repeat;
+  opacity: 0.24;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fountain-envelope {
+  position: relative;
+  width: min(800px, 100%);
+  margin: clamp(16px, 3vw, 30px) auto 0;
+  filter: drop-shadow(0 22px 28px rgba(94, 78, 42, 0.12));
+}
+
+.fountain-envelope-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fountain-envelope-copy {
+  position: absolute;
+  left: 18%;
+  top: 21%;
+  z-index: 2;
+  width: 64%;
+  color: rgba(79, 66, 31, 0.84);
+  font-family: var(--font-display);
+  text-align: center;
+}
+
+.fountain-envelope-copy span {
+  color: #657047;
+  font-size: clamp(0.68rem, 1.8vw, 0.86rem);
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-indent: 0.25em;
+  text-transform: uppercase;
+}
+
+.fountain-envelope-copy p {
+  max-width: 34rem;
+  margin: 1em auto 0;
+  font-size: clamp(1rem, 2.3vw, 1.28rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.fountain-envelope-copy strong {
+  display: block;
+  margin-top: 0.7em;
+  color: #657047;
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.fountain-envelope-copy i {
+  padding: 0 0.16em;
+  font-size: 0.7em;
+}
+
+.fountain-gallery-header {
+  display: none;
+}
+
+@media (max-width: 680px) {
+  .fountain-count-grid {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .fountain-count-unit {
+    min-height: 88px;
+  }
+
+  .fountain-count-unit strong {
+    font-size: clamp(1.5rem, 8vw, 2rem);
+  }
+
+  .fountain-story-grid {
+    width: 100%;
+  }
+
+  .fountain-story-card {
+    min-width: 0;
+  }
+
+  .fountain-event-card {
+    width: 100%;
+    padding: 16px 10px 12px;
+  }
+
+  .fountain-message-section {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .fountain-envelope {
+    width: min(460px, 100%);
+    margin-top: 6px;
+  }
+
+  .fountain-envelope-copy {
+    left: 17%;
+    top: 19.5%;
+    width: 66%;
+  }
+
+  .fountain-envelope-copy span {
+    font-size: 0.54rem;
+    letter-spacing: 0.18em;
+  }
+
+  .fountain-envelope-copy p {
+    margin-top: 0.72em;
+    font-size: clamp(0.58rem, 2.55vw, 0.76rem);
+    line-height: 1.28;
+    overflow-wrap: anywhere;
+  }
+
+  .fountain-envelope-copy strong {
+    font-size: clamp(1.42rem, 6.2vw, 1.96rem);
+  }
+
+  .fountain-rsvp-panel {
+    width: 100%;
+    padding: 28px 18px 24px;
+  }
+}
