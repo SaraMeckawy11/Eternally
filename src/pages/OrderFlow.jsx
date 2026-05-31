@@ -11,6 +11,9 @@ const PENDING_ORDER_KEY = 'veloura_pending_order_id';
 const DISPLAY_PRICE = '$99';
 const DEFAULT_INVITATION_MESSAGE = 'Two Souls, One Destination.';
 const OLD_MESSAGE_HELP_TEXT = 'This text appears as the tagline under your names in the invitation ';
+// The envelope "A Note" message every design reveals in its demo. Used as the
+// placeholder for the optional Envelope Message field.
+const DEFAULT_ENVELOPE_MESSAGE = 'Thank you for being part of the moments that brought us here. We feel incredibly lucky to celebrate this beginning with the people we love most.';
 
 const normalizeEmail = (value = '') => value.trim().toLowerCase();
 const isValidEmail = (value = '') => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
@@ -101,12 +104,36 @@ const TEMPLATE_UPLOAD_LAYOUTS = {
 // never asked for details that won't appear on their invitation.
 // (Unknown/remote templates default to showing every optional field.)
 const TEMPLATE_OPTIONAL_FIELD_SUPPORT = {
-  'boarding-pass': { message: true, venueAddress: true },
-  'coastal-breeze': { message: true, venueAddress: true },
-  'fountain-reverie-v1': { message: true, venueAddress: true },
-  'fountain-reverie-v2': { message: true, venueAddress: true },
-  'gazebo-garden': { message: true, venueAddress: true },
-  'theater': { message: false, venueAddress: true },
+  'boarding-pass': { message: true, venueAddress: true, coupleMessage: true },
+  'coastal-breeze': { message: true, venueAddress: true, coupleMessage: true },
+  'fountain-reverie-v1': { message: true, venueAddress: true, coupleMessage: true },
+  'fountain-reverie-v2': { message: true, venueAddress: true, coupleMessage: true },
+  'gazebo-garden': { message: true, venueAddress: true, coupleMessage: true },
+  'theater': { message: false, venueAddress: false, coupleMessage: true },
+};
+
+// The envelope "A Note" message each design shows in its demo. Surfaced as the
+// placeholder for the optional Envelope Message field so users see the real
+// demo copy for the design they picked.
+const TEMPLATE_DEMO_ENVELOPE_MESSAGE = {
+  'boarding-pass': DEFAULT_ENVELOPE_MESSAGE,
+  'coastal-breeze': DEFAULT_ENVELOPE_MESSAGE,
+  'fountain-reverie-v1': DEFAULT_ENVELOPE_MESSAGE,
+  'fountain-reverie-v2': DEFAULT_ENVELOPE_MESSAGE,
+  'gazebo-garden': DEFAULT_ENVELOPE_MESSAGE,
+  'theater': DEFAULT_ENVELOPE_MESSAGE,
+};
+
+// The default tagline/message each design shows in its demo. Used as the
+// placeholder in the optional "Personal Message" field so the user sees the
+// real demo copy for the design they picked (not a generic fallback).
+const TEMPLATE_DEMO_MESSAGE = {
+  'boarding-pass': 'Two Souls, One Destination.',
+  'coastal-breeze': 'With the sea as our witness, we begin forever.',
+  'fountain-reverie-v1': 'Thank you for being part of the moments that brought us here. We feel incredibly lucky to celebrate this beginning with the people we love most.',
+  'fountain-reverie-v2': 'Thank you for being part of the moments that brought us here. We feel incredibly lucky to celebrate this beginning with the people we love most.',
+  'gazebo-garden': 'A garden promise sealed in soft light.',
+  'theater': 'Black tie  •  Dinner & dancing to follow',
 };
 
 const normalizePhotoFit = (value) => {
@@ -176,6 +203,7 @@ export default function OrderFlow() {
     venueAddress: '',
     venueMapUrl: '',
     message: '',
+    coupleMessage: '',
     language: 'en',
     secondLanguage: '',
   };
@@ -184,6 +212,7 @@ export default function OrderFlow() {
     return {
       ...restored,
       message: restored.message === OLD_MESSAGE_HELP_TEXT ? '' : (restored.message || ''),
+      coupleMessage: restored.coupleMessage || '',
     };
   });
 
@@ -631,6 +660,7 @@ export default function OrderFlow() {
             language: form.language,
             secondLanguage: optionalValue('secondLanguage'),
           },
+          coupleMessage: fieldEnabled('coupleMessage') ? (form.coupleMessage.trim() || undefined) : undefined,
           disabledFields,
           photos: allPhotos.filter(p => !p._uploading && !p._failed),
           musicUrl: music.enabled && music.url && !music.uploading && !music.failed ? music.url : undefined,
@@ -671,11 +701,13 @@ export default function OrderFlow() {
   const optionalFields = [
     { key: 'venueAddress', label: 'Venue Address' },
     { key: 'message', label: 'Personal Message' },
+    { key: 'coupleMessage', label: 'Envelope Message' },
     { key: 'rsvp', label: 'RSVP Section' },
     // Removed secondLanguage option
   ].filter(field => {
     if (field.key === 'venueAddress') return templateFieldSupport.venueAddress !== false;
     if (field.key === 'message') return templateFieldSupport.message !== false;
+    if (field.key === 'coupleMessage') return templateFieldSupport.coupleMessage !== false;
     return true;
   });
 
@@ -882,7 +914,7 @@ export default function OrderFlow() {
                 <p className="form-hint">All fields below are optional. Toggle off any you don't need — they won't appear on your invitation.</p>
                 <div className="form-grid">
                   {optionalFields.map(field => (
-                    <div key={field.key} className={`form-field ${['message', 'rsvp'].includes(field.key) ? 'form-field--wide' : ''} ${disabledFields.includes(field.key) ? 'field-disabled' : ''}`}>
+                    <div key={field.key} className={`form-field ${['message', 'coupleMessage', 'rsvp'].includes(field.key) ? 'form-field--wide' : ''} ${disabledFields.includes(field.key) ? 'field-disabled' : ''}`}>
                       <div className="field-header">
                         <label>{field.label}</label>
                         <button type="button" className="field-toggle" onClick={() => toggleField(field.key)}>
@@ -899,10 +931,23 @@ export default function OrderFlow() {
                               value={form[field.key]}
                               onChange={e => handleInput(field.key, e.target.value)}
                               rows={3}
-                              placeholder={DEFAULT_INVITATION_MESSAGE}
+                              placeholder={TEMPLATE_DEMO_MESSAGE[selectedTemplate?.slug] || DEFAULT_INVITATION_MESSAGE}
                             />
                             <p className="form-hint message-hint">
                               Leave blank to use the template message shown in the demo.
+                            </p>
+                          </>
+                        ) : field.key === 'coupleMessage' ? (
+                          <>
+                            <textarea
+                              className="message-textarea"
+                              value={form[field.key]}
+                              onChange={e => handleInput(field.key, e.target.value)}
+                              rows={3}
+                              placeholder={TEMPLATE_DEMO_ENVELOPE_MESSAGE[selectedTemplate?.slug] || DEFAULT_ENVELOPE_MESSAGE}
+                            />
+                            <p className="form-hint message-hint">
+                              The longer note revealed inside the envelope. Leave blank to use the message shown in the demo.
                             </p>
                           </>
                         ) : (
@@ -1134,6 +1179,7 @@ export default function OrderFlow() {
                   <div className="review-item"><span className="review-label">Venue</span><span>{form.venue}</span></div>
                   {form.venueAddress && !disabledFields.includes('venueAddress') && <div className="review-item"><span className="review-label">Address</span><span>{form.venueAddress}</span></div>}
                   {form.message && !disabledFields.includes('message') && <div className="review-item"><span className="review-label">Message</span><span>{form.message}</span></div>}
+                  {form.coupleMessage && !disabledFields.includes('coupleMessage') && <div className="review-item"><span className="review-label">Envelope Message</span><span>{form.coupleMessage}</span></div>}
                 </div>
               </div>
 

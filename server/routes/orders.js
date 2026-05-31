@@ -3,7 +3,7 @@ import Order from '../models/Order.js';
 import Template from '../models/Template.js';
 import User from '../models/User.js';
 import { sendMail } from '../config/email.js';
-import { orderConfirmationEmail, editLimitWarningEmail, sensitiveFieldChangeEmail } from '../utils/emailTemplates.js';
+import { orderConfirmationEmail, sensitiveFieldChangeEmail } from '../utils/emailTemplates.js';
 import { validateOrderBody, validateEditToken } from '../middleware/validateOrder.js';
 import { getFallbackTemplate } from '../data/templateFallbacks.js';
 import {
@@ -66,7 +66,7 @@ async function ensureTemplateMetadata(order) {
 // POST /api/orders - create order + PayPal order. Refuses with 503 if PayPal credentials are missing.
 router.post('/', validateOrderBody, async (req, res) => {
   try {
-    const { customerName, customerEmail, customerPhone, templateId, weddingDetails, customizations, colorOverrides, photos, musicUrl, musicPublicId, musicEnabled, storyMilestones } = req.body;
+    const { customerName, customerEmail, customerPhone, templateId, weddingDetails, customizations, colorOverrides, photos, musicUrl, musicPublicId, musicEnabled, storyMilestones, coupleMessage } = req.body;
     const disabledFields = normalizeDisabledFields(req.body.disabledFields);
     const cleanWeddingDetails = applyDisabledFields(weddingDetails, disabledFields);
 
@@ -96,6 +96,7 @@ router.post('/', validateOrderBody, async (req, res) => {
       template: template._id,
       templateName: template.name,
       weddingDetails: cleanWeddingDetails,
+      coupleMessage: disabledFields.includes('coupleMessage') ? undefined : coupleMessage,
       customizations: customizations || {},
       disabledFields,
       colorOverrides: colorOverrides || {},
@@ -375,11 +376,11 @@ router.put('/edit/:editToken', validateEditToken, async (req, res) => {
     if (!order.canEdit()) {
       return res.status(403).json({
         error: 'Edits not allowed',
-        reason: order.editsRemaining <= 0 ? 'No edits remaining' : 'Invitation expired or inactive',
+        reason: 'Invitation expired or inactive',
       });
     }
 
-    const { customizations, colorOverrides, photos, storyMilestones, musicUrl, musicPublicId, musicEnabled } = req.body;
+    const { customizations, colorOverrides, photos, storyMilestones, musicUrl, musicPublicId, musicEnabled, coupleMessage } = req.body;
     const disabledFields = req.body.disabledFields !== undefined
       ? normalizeDisabledFields(req.body.disabledFields)
       : order.disabledFields || [];
@@ -432,12 +433,12 @@ router.put('/edit/:editToken', validateEditToken, async (req, res) => {
     if (colorOverrides) { order.colorOverrides = { ...order.colorOverrides, ...colorOverrides }; fieldsChanged.push('colorOverrides'); }
     if (photos) { order.photos = photos; fieldsChanged.push('photos'); }
     if (storyMilestones) { order.storyMilestones = storyMilestones; fieldsChanged.push('storyMilestones'); }
+    if (coupleMessage !== undefined) { order.coupleMessage = coupleMessage; fieldsChanged.push('coupleMessage'); }
     if (musicUrl !== undefined) { order.musicUrl = musicUrl; fieldsChanged.push('musicUrl'); }
     if (musicPublicId !== undefined) { order.musicPublicId = musicPublicId; fieldsChanged.push('musicPublicId'); }
     if (musicEnabled !== undefined) { order.musicEnabled = musicEnabled; fieldsChanged.push('musicEnabled'); }
 
-    // Decrement appropriate counters
-    order.editsRemaining -= 1;
+    // General edits are unlimited; only the name/date correction counters are tracked.
     if (nameChanges.length > 0) {
       order.nameEditsRemaining -= 1;
       fieldsChanged.push('coupleNames');
@@ -448,16 +449,6 @@ router.put('/edit/:editToken', validateEditToken, async (req, res) => {
     }
     order.editHistory.push({ fieldsChanged });
     await order.save();
-
-    // Email notifications
-    if (order.editsRemaining <= 2 && order.editsRemaining > 0) {
-      const email = editLimitWarningEmail({
-        customerName: order.customerName,
-        editsRemaining: order.editsRemaining,
-        editToken: order.editToken,
-      });
-      sendMail({ to: order.customerEmail, ...email }).catch(console.error);
-    }
 
     // Notify on sensitive field changes (names or date)
     if (nameChanges.length > 0 || dateChanged) {

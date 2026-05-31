@@ -137,7 +137,7 @@ export default function GazeboGardenInvitation({ order, demo = false, publicSlug
   const venue = wd.venue || '';
   const venueAddress = fieldEnabled('venueAddress') ? (wd.venueAddress || '') : '';
   const message = fieldEnabled('message') ? (wd.message || 'A garden promise sealed in soft light.') : '';
-  const coupleMessage = fieldEnabled('message') ? (order.coupleMessage || (demo ? DEFAULT_COUPLE_MESSAGE : wd.message) || DEFAULT_COUPLE_MESSAGE) : '';
+  const coupleMessage = fieldEnabled('coupleMessage') ? (order.coupleMessage || (demo ? DEFAULT_COUPLE_MESSAGE : wd.message) || DEFAULT_COUPLE_MESSAGE) : '';
   const heroDate = compactDateStr || fullDateStr;
   const fullDateTime = [fullDateStr, timeStr].filter(Boolean).join(' at ');
   const shouldPlayMusic = Boolean(order.musicUrl && order.musicEnabled !== false);

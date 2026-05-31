@@ -4,14 +4,17 @@ import '../styles/Dashboard.css';
 
 const API = import.meta.env.VITE_API_URL || '/api';
 const PHOTO_CATEGORIES = {
-  venue: { label: 'Venue Photos', max: 2 },
   story: { label: 'Our Story Photos', max: 4 },
   gallery: { label: 'Gallery Photos', max: 6 },
 };
 const NON_STORY_CATEGORIES = [
-  { key: 'venue', label: 'Venue Photos', max: 2 },
   { key: 'gallery', label: 'Gallery Photos', max: 6 },
 ];
+const PHOTO_FIT_OPTIONS = [
+  { value: 'cover', label: 'Fill', hint: 'Fill the frame' },
+  { value: 'contain', label: 'Fit', hint: 'Keep the whole photo visible' },
+];
+const normalizePhotoFit = (value) => (value === 'contain' || value === 'fit' ? 'contain' : 'cover');
 
 export default function Dashboard() {
   const { editToken } = useParams();
@@ -27,7 +30,7 @@ export default function Dashboard() {
   // Edit mode
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
-  const [editPhotos, setEditPhotos] = useState({ venue: [], story: [], gallery: [] });
+  const [editPhotos, setEditPhotos] = useState({ story: [], gallery: [] });
   const [editStoryMilestones, setEditStoryMilestones] = useState([]);
   const [photoUploading, setPhotoUploading] = useState({});
   const [saving, setSaving] = useState(false);
@@ -64,14 +67,14 @@ export default function Dashboard() {
       venueAddress: wd.venueAddress || '',
       venueMapUrl: wd.venueMapUrl || '',
       message: wd.message || '',
-      secondLanguage: wd.secondLanguage || '',
     });
-    // Categorize existing photos
+    // Categorize existing photos. Venue photos are no longer edited separately,
+    // so any legacy venue/uncategorized photos fold into the gallery.
     const allPhotos = order.photos || [];
-    const categorized = { venue: [], story: [], gallery: [] };
+    const categorized = { story: [], gallery: [] };
     allPhotos.forEach(p => {
       const cat = p.label && categorized[p.label] ? p.label : 'gallery';
-      categorized[cat].push(p);
+      categorized[cat].push({ ...p, fit: normalizePhotoFit(p.fit) });
     });
     setEditPhotos(categorized);
     const existingMilestones = Array.isArray(order.storyMilestones) ? order.storyMilestones : [];
@@ -134,6 +137,22 @@ export default function Dashboard() {
       updated[index] = undefined;
       return { ...prev, story: updated };
     });
+  };
+
+  const setStoryPhotoFit = (index, fit) => {
+    const nextFit = normalizePhotoFit(fit);
+    setEditPhotos(prev => ({
+      ...prev,
+      story: prev.story.map((photo, i) => (i === index && photo ? { ...photo, fit: nextFit } : photo)),
+    }));
+  };
+
+  const setEditPhotoFit = (category, index, fit) => {
+    const nextFit = normalizePhotoFit(fit);
+    setEditPhotos(prev => ({
+      ...prev,
+      [category]: prev[category].map((photo, i) => (i === index && photo ? { ...photo, fit: nextFit } : photo)),
+    }));
   };
 
   // Compute whether names are editable (within 48h grace period + has remaining edits)
@@ -212,7 +231,6 @@ export default function Dashboard() {
         venueAddress: editForm.venueAddress || undefined,
         venueMapUrl: editForm.venueMapUrl || undefined,
         message: editForm.message || undefined,
-        secondLanguage: editForm.secondLanguage || undefined,
       };
       // Include name fields if they were editable (grace period)
       if (nameEditable) {
@@ -242,7 +260,7 @@ export default function Dashboard() {
       const updated = await fetch(`${API}/orders/dashboard/${editToken}`).then(r => r.json());
       setOrder(updated);
       setEditing(false);
-      const parts = [`Saved! ${data.editsRemaining} edits remaining.`];
+      const parts = ['Saved!'];
       if (data.nameEditsRemaining !== undefined && data.nameEditsRemaining <= 0) {
         parts.push('Couple names are now locked.');
       }
@@ -318,9 +336,9 @@ export default function Dashboard() {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
             Open Invitation
           </a>
-          <button className="dash-action-btn" onClick={startEditing} disabled={order.editsRemaining <= 0 || editing}>
+          <button className="dash-action-btn" onClick={startEditing} disabled={editing}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-            {editing ? 'Editing...' : `Edit (${order.editsRemaining} left)`}
+            {editing ? 'Editing...' : 'Edit Invitation'}
           </button>
           <button className="dash-action-btn" onClick={() => {
             const intro = `You're invited to ${wd.groomName && wd.brideName ? `${wd.groomName} & ${wd.brideName}'s` : 'our'} wedding! View the invitation here:`;
@@ -361,7 +379,7 @@ export default function Dashboard() {
                     </div>
                     <div className="field-grace-notice full-width">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
-                      You have <strong>1 name correction</strong> available.
+                      You have <strong>{order.nameEditsRemaining} name correction{order.nameEditsRemaining === 1 ? '' : 's'}</strong> available.
                       {nameGraceRemaining && <> Window closes in <strong>{nameGraceRemaining}</strong>.</>}
                     </div>
                   </>
@@ -423,10 +441,6 @@ export default function Dashboard() {
                   <label>Personal Message</label>
                   <textarea rows={3} value={editForm.message} onChange={e => handleEditInput('message', e.target.value)} />
                 </div>
-                <div className="form-field full-width">
-                  <label>Second Language Text</label>
-                  <textarea rows={3} value={editForm.secondLanguage} onChange={e => handleEditInput('secondLanguage', e.target.value)} />
-                </div>
               </div>
 
               <div className="edit-story-section">
@@ -450,7 +464,20 @@ export default function Dashboard() {
                           <div className="edit-story-photo">
                             {photo ? (
                               <>
-                                <img src={photo.url} alt={`Story ${i + 1}`} />
+                                <img src={photo.url} alt={`Story ${i + 1}`} style={{ objectFit: normalizePhotoFit(photo.fit) }} />
+                                <div className="photo-fit-controls" role="group" aria-label={`Story photo ${i + 1} fit`}>
+                                  {PHOTO_FIT_OPTIONS.map(option => (
+                                    <button
+                                      key={option.value}
+                                      type="button"
+                                      className={`photo-fit-btn ${normalizePhotoFit(photo.fit) === option.value ? 'active' : ''}`}
+                                      onClick={() => setStoryPhotoFit(i, option.value)}
+                                      title={option.hint}
+                                    >
+                                      {option.label}
+                                    </button>
+                                  ))}
+                                </div>
                                 <button type="button" className="photo-remove" onClick={() => removeStoryPhoto(i)} title="Remove photo">
                                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                                 </button>
@@ -506,7 +533,20 @@ export default function Dashboard() {
                       )}
                       {editPhotos[cat.key].map((photo, i) => (
                         <div key={i} className="photo-preview">
-                          <img src={photo.url} alt={`${cat.label} ${i + 1}`} />
+                          <img src={photo.url} alt={`${cat.label} ${i + 1}`} style={{ objectFit: normalizePhotoFit(photo.fit) }} />
+                          <div className="photo-fit-controls" role="group" aria-label={`${cat.label} ${i + 1} fit`}>
+                            {PHOTO_FIT_OPTIONS.map(option => (
+                              <button
+                                key={option.value}
+                                type="button"
+                                className={`photo-fit-btn ${normalizePhotoFit(photo.fit) === option.value ? 'active' : ''}`}
+                                onClick={() => setEditPhotoFit(cat.key, i, option.value)}
+                                title={option.hint}
+                              >
+                                {option.label}
+                              </button>
+                            ))}
+                          </div>
                           <button type="button" className="photo-remove" onClick={() => removeEditPhoto(cat.key, i)}>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                           </button>
@@ -660,7 +700,7 @@ export default function Dashboard() {
             <h2 className="dash-section-title">Uploaded Photos</h2>
             <div className="dash-photos">
               {order.photos.map((p, i) => (
-                <img key={i} src={p.url} alt={`Photo ${i + 1}`} className="dash-photo" />
+                <img key={i} src={p.url} alt={`Photo ${i + 1}`} className="dash-photo" style={{ objectFit: normalizePhotoFit(p.fit) }} />
               ))}
             </div>
           </div>

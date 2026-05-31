@@ -10,6 +10,7 @@ loadDotenv({ path: resolve(__dirname, '.env') });
 
 import express from 'express';
 import cors from 'cors';
+import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 
 import templateRoutes from './routes/templates.js';
@@ -33,16 +34,33 @@ if (paypalApiConfigured()) {
   console.error('[paypal] CREDENTIALS MISSING — set PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET in server/.env. Order creation will return 503 until they are set.');
 }
 
-// Connect to MongoDB
-await connectDB();
-const templateSyncResult = await syncDefaultTemplates();
-console.log(
-  `Templates ready (${templateSyncResult.upsertedCount || 0} inserted, ${templateSyncResult.modifiedCount || 0} updated)`
-);
-const orderSyncResult = await syncOrderTemplateMetadata();
-console.log(
-  `Orders normalized (${orderSyncResult.matchedCount || 0} checked, ${orderSyncResult.modifiedCount || 0} updated)`
-);
+// Run one-time data syncs once the database is connected. Kept off the boot
+// path so the API server can start listening immediately (a slow or briefly
+// unavailable DB must not stop the server from coming up — that would surface
+// as a 502 to the client). Runs once per established connection.
+let syncsRan = false;
+async function runStartupSyncs() {
+  if (syncsRan) return;
+  syncsRan = true;
+  try {
+    const templateSyncResult = await syncDefaultTemplates();
+    console.log(
+      `Templates ready (${templateSyncResult.upsertedCount || 0} inserted, ${templateSyncResult.modifiedCount || 0} updated)`
+    );
+    const orderSyncResult = await syncOrderTemplateMetadata();
+    console.log(
+      `Orders normalized (${orderSyncResult.matchedCount || 0} checked, ${orderSyncResult.modifiedCount || 0} updated)`
+    );
+  } catch (err) {
+    syncsRan = false;
+    console.error('Startup data sync failed:', err.message);
+  }
+}
+mongoose.connection.on('connected', runStartupSyncs);
+if (mongoose.connection.readyState === 1) runStartupSyncs();
+
+// Kick off the DB connection (retries in the background; never blocks boot).
+connectDB();
 
 // Global middleware
 app.use(cors());

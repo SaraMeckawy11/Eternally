@@ -112,7 +112,7 @@ export default function FountainReverieInvitation({ order, demo = false, publicS
   const timeOfDay = fieldEnabled('weddingTime') ? getTimeOfDayLine(wd.weddingTime) : '';
   const venue = wd.venue || '';
   const venueAddress = fieldEnabled('venueAddress') ? (wd.venueAddress || '') : '';
-  const coupleMessage = fieldEnabled('message')
+  const coupleMessage = fieldEnabled('coupleMessage')
     ? (order.coupleMessage || (demo ? DEFAULT_COUPLE_MESSAGE : wd.message) || DEFAULT_COUPLE_MESSAGE)
     : '';
   const shouldPlayMusic = Boolean(order.musicUrl && order.musicEnabled !== false);

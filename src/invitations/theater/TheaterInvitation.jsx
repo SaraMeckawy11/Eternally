@@ -79,7 +79,7 @@ export default function TheaterInvitation({ order, demo = false, publicSlug }) {
   const venue = weddingDetails.venue || '';
   const venueAddress = fieldEnabled('venueAddress') ? (weddingDetails.venueAddress || '') : '';
   const timeStr = fieldEnabled('weddingTime') ? formatInvitationTime(weddingDetails.weddingTime) : '';
-  const coupleMessage = fieldEnabled('message')
+  const coupleMessage = fieldEnabled('coupleMessage')
     ? (order.coupleMessage || (demo ? DEFAULT_COUPLE_MESSAGE : weddingDetails.message) || DEFAULT_COUPLE_MESSAGE)
     : '';
 

@@ -69,8 +69,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 72% 48% at 50% 48%, rgba(255, 253, 247, 0.96) 0%, rgba(255, 253, 247, 0.68) 48%, rgba(255, 253, 247, 0.28) 72%, transparent 88%),
-    linear-gradient(180deg, transparent 0%, transparent 70%, rgba(255, 250, 240, 0.68) 100%);
+    radial-gradient(ellipse 72% 50% at 50% 48%, rgba(255, 253, 247, 0.96) 0%, rgba(255, 253, 247, 0.68) 48%, rgba(255, 253, 247, 0.28) 72%, transparent 88%),
+    linear-gradient(180deg, rgba(255, 253, 247, 0.16) 0%, transparent 24%, transparent 68%, rgba(255, 250, 240, 0.72) 100%);
 }
 
 .coastal-main-birds {

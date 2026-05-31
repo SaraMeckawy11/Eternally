@@ -24,6 +24,10 @@ const orderSchema = new mongoose.Schema({
     secondLanguage: { type: String },                     // bilingual support
   },
 
+  // Envelope "A Note" message — the longer note revealed inside the envelope.
+  // Independent of weddingDetails.message (the short hero tagline).
+  coupleMessage: { type: String },
+
   // Story milestones — text + dates for the "Our Story" section
   storyMilestones: [{
     date:        { type: String },
@@ -71,8 +75,8 @@ const orderSchema = new mongoose.Schema({
   invitationCode:   { type: String, unique: true, index: true, sparse: true }, // private owner code shown in email
 
   // Edit tracking
-  editsRemaining:   { type: Number, default: 5 },
-  nameEditsRemaining: { type: Number, default: 1 },   // 1 name correction allowed within grace period
+  editsRemaining:   { type: Number, default: 5 },     // legacy — general edits are now unlimited
+  nameEditsRemaining: { type: Number, default: 2 },   // 2 name corrections allowed within grace period
   dateEditsRemaining: { type: Number, default: 2 },   // 2 date changes allowed total
   activatedAt:      { type: Date },                    // when payment was confirmed — starts grace period
   editHistory: [{
@@ -178,11 +182,10 @@ orderSchema.methods.hasDateChanged = function (newDetails) {
   return incoming !== original;
 };
 
-// Check if edits are allowed
+// Check if edits are allowed. General edits are unlimited — only an active
+// invitation is required. (Name and date corrections have their own counters.)
 orderSchema.methods.canEdit = function () {
-  if (this.status !== 'active') return false;
-  if (this.editsRemaining <= 0) return false;
-  return true;
+  return this.status === 'active';
 };
 
 export default mongoose.model('Order', orderSchema);

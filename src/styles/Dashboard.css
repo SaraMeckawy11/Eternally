@@ -330,11 +330,13 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .dash-photo {
   width: 120px;
   height: 120px;
   object-fit: cover;
+  background: var(--bg-alt, #f6f4ef);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
 }
@@ -452,8 +454,53 @@
 
 .edit-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-light);
+}
+.edit-actions .btn {
+  flex: 1 1 160px;
+  justify-content: center;
+  min-height: 48px;
+  padding: 13px 28px;
+  font-size: 0.95rem;
+}
+.edit-actions .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Photo fit (Fill / Fit) controls in dashboard editing */
+.photo-fit-controls {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  z-index: 3;
+}
+.photo-fit-btn {
+  min-height: 20px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(20, 18, 16, 0.72);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(6px);
+}
+.photo-fit-btn.active {
+  background: var(--gold, #b8924a);
+  color: #fffdf8;
 }
 
 /* Photo editing in dashboard */
@@ -478,6 +525,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .edit-photos-section .photo-upload-btn {
   width: 100px;
@@ -504,6 +552,8 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   position: relative;
+  background: var(--bg-alt, #f6f4ef);
+  border: 1px solid var(--border-light);
 }
 .edit-photos-section .photo-preview img {
   width: 100%;

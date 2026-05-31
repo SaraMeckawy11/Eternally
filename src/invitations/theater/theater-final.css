@@ -51,6 +51,11 @@ body:has(.theater-theme),
   width: min(941px, 100vw);
   aspect-ratio: 941 / 1672;
   background-image: url("../../assets/theater/heroEmpty.png");
+  /* Establish a container so hero text scales with the poster width (cqw),
+     not the viewport. This keeps the date block the same proportion of the
+     poster on every device, so it can never overflow into the time/venue
+     rows on small phones. */
+  container-type: inline-size;
 }
 
 .theater-hero > * {
@@ -109,6 +114,8 @@ body:has(.theater-theme),
   align-items: center;
   gap: 0.18em;
   width: 64%;
+  /* Base size scales with the poster so the em-based gaps below scale too. */
+  font-size: min(0.95rem, 1.6cqw);
   color: var(--theater-red);
   font-family: var(--font-marquee);
   text-transform: uppercase;
@@ -120,7 +127,7 @@ body:has(.theater-theme),
   padding: 0;
   background: transparent;
   color: #331d15;
-  font-size: clamp(0.62rem, 1.55vw, 0.98rem);
+  font-size: min(0.98rem, 1.67cqw);
   font-weight: 800;
   letter-spacing: 0.22em;
   line-height: 1;
@@ -140,14 +147,14 @@ body:has(.theater-theme),
 .theater-hero-date-row strong {
   color: #85120f;
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.65rem, 4.65vw, 3.05rem);
+  font-size: min(3.05rem, 5.18cqw);
   font-weight: 800;
   line-height: 0.9;
 }
 
 .theater-hero-date-row span {
   color: #331d15;
-  font-size: clamp(0.54rem, 1.34vw, 0.86rem);
+  font-size: min(0.86rem, 1.46cqw);
   font-weight: 800;
   letter-spacing: 0.18em;
   line-height: 1;
@@ -165,7 +172,7 @@ body:has(.theater-theme),
   width: 46%;
   color: #65150f;
   font-family: var(--font-marquee);
-  font-size: clamp(0.5rem, 1.3vw, 0.85rem);
+  font-size: min(0.85rem, 1.44cqw);
   font-weight: 700;
   letter-spacing: 0.14em;
   line-height: 1.1;
