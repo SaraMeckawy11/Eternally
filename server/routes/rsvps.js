@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import Rsvp from '../models/Rsvp.js';
 import Order from '../models/Order.js';
-import { sendMail } from '../config/email.js';
-import { rsvpNotificationEmail } from '../utils/emailTemplates.js';
 
 const router = Router();
 
@@ -42,15 +40,8 @@ router.post('/:publicSlug', async (req, res) => {
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
-    // Notify the couple via email
-    const notification = rsvpNotificationEmail({
-      customerName: order.customerName,
-      guestName,
-      attending,
-      guestCount: guestCount || 1,
-      message,
-    });
-    sendMail({ to: order.customerEmail, ...notification }).catch(console.error);
+    // No per-RSVP email notification — responses are surfaced in the
+    // couple's dashboard instead of emailing on every submission.
 
     res.status(201).json({ message: 'RSVP recorded', rsvp });
   } catch (err) {

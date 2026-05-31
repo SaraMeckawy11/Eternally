@@ -7,7 +7,6 @@ import { buildInvitationImageSources, containInvitationPhoto, DEFAULT_COUPLE_MES
 import InvitationPhoto from '../InvitationPhoto';
 
 import ceremonyArch from '../../assets/coastal/beach-wedding-ceremony-illustration-watercolor-style-depicts-romantic-setup-arch-adorned-orange-roses-white-378559681.webp';
-import coastalHeroEmpty from '../../assets/coastal/heroEmpty.png';
 import cruiseShip from '../../assets/coastal/cruise-ship-clean.webp';
 import blueShellAsset from '../../assets/coastal/blue-shell-transparent.png';
 import coastalEnvelope from '../../assets/coastal/coastal-breeze-envelope-transparent.png';
@@ -203,7 +202,7 @@ export default function CoastalBreezeInvitation({ order, demo = false, publicSlu
 
       <section className="coastal-hero">
         <div className="coastal-hero-bg" aria-hidden>
-          <img src={coastalHeroEmpty} alt="" />
+          <img src={ceremonyArch} alt="" />
           <div className="coastal-hero-bg-wash" />
         </div>
 
@@ -213,37 +212,41 @@ export default function CoastalBreezeInvitation({ order, demo = false, publicSlu
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
         >
-          <span className="coastal-kicker">Please join us to</span>
-          <span className="coastal-kicker coastal-kicker-thin">celebrate the marriage of</span>
+          <div className="coastal-hero-top">
+            <span className="coastal-kicker">Please join us to</span>
+            <span className="coastal-kicker coastal-kicker-thin">celebrate the marriage of</span>
 
-          <h1>
-            <span className="coastal-hero-name">{name1}</span>
-            <span className="coastal-hero-amp">&amp;</span>
-            <span className="coastal-hero-name">{name2}</span>
-          </h1>
+            <h1>
+              <span className="coastal-hero-name">{name1}</span>
+              <span className="coastal-hero-amp">&amp;</span>
+              <span className="coastal-hero-name">{name2}</span>
+            </h1>
 
-          <FlourishSvg className="coastal-hero-flourish" />
+            <FlourishSvg className="coastal-hero-flourish" />
+          </div>
 
-          {weddingDate ? (
-            <div className="coastal-hero-datepill">
-              <div>
-                <small>{dayStr ? dayStr.slice(0, 3).toUpperCase() : 'Day'}</small>
+          <div className="coastal-hero-bottom">
+            {weddingDate ? (
+              <div className="coastal-hero-datepill">
+                <div>
+                  <small>{dayStr ? dayStr.slice(0, 3).toUpperCase() : 'Day'}</small>
+                </div>
+                <span aria-hidden />
+                <div className="coastal-hero-datepill-month">
+                  <small>{monthStr || 'Month'}</small>
+                  <strong>{dayOfMonth || '—'}</strong>
+                </div>
+                <span aria-hidden />
+                <div>
+                  <small>{timeStr || 'Time'}</small>
+                </div>
               </div>
-              <span aria-hidden />
-              <div className="coastal-hero-datepill-month">
-                <small>{monthStr || 'Month'}</small>
-                <strong>{dayOfMonth || '—'}</strong>
-              </div>
-              <span aria-hidden />
-              <div>
-                <small>{timeStr || 'Time'}</small>
-              </div>
-            </div>
-          ) : null}
+            ) : null}
 
-          <p className="coastal-hero-venue">{venue || 'By the sea'}</p>
+            <p className="coastal-hero-venue">{venue || 'By the sea'}</p>
 
-          {message && <p className="coastal-hero-message">"{message}"</p>}
+            {message && <p className="coastal-hero-message">"{message}"</p>}
+          </div>
         </motion.article>
       </section>
 

@@ -62,9 +62,8 @@ export default function GazeboSplash({ onDismiss }) {
         transition={fading ? { duration: 0.6, ease: 'easeInOut' } : { duration: 0.2 }}
         exit={{ opacity: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } }}
       >
-        {/* Opaque backdrop keeps the hero section hidden until the envelope
-            animation has finished playing. */}
-        <div className="gazebo-splash-backdrop" aria-hidden />
+        {/* The envelope animation plays over a transparent stage so it opens
+            directly onto the hero section underneath — no beige screen. */}
         <iframe
           className="gazebo-splash-envelope-animation"
           src={envelopeAnimationUrl}
