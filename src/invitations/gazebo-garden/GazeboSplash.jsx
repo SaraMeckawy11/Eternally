@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import envelopeAnimationUrl from '../../assets/envelope_animation.html?url';
 
 const FRAME_COUNT = 73;
-const FRAMES_PER_SECOND = 30;
+const FRAMES_PER_SECOND = 20;
 const END_PADDING_MS = 320;
 const FALLBACK_DISMISS_MS = 4600;
 const ANIMATION_DISMISS_MS = Math.ceil((FRAME_COUNT / FRAMES_PER_SECOND) * 1000) + END_PADDING_MS;
