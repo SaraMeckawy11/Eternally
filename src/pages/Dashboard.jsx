@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { downloadGuestMessagesPdf } from '../lib/guestMessagesPdf';
+import { downloadGuestMessagesPdf, downloadGuestResponsesPdf } from '../lib/guestMessagesPdf';
 import '../styles/Dashboard.css';
 
 const API = import.meta.env.VITE_API_URL || '/api';
@@ -50,6 +50,7 @@ export default function Dashboard() {
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
   const [downloadingMessages, setDownloadingMessages] = useState(false);
+  const [downloadingResponses, setDownloadingResponses] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -318,6 +319,24 @@ export default function Dashboard() {
       setSaveMsg(err.message || 'Could not download guest messages.');
     }
     setDownloadingMessages(false);
+  };
+
+  const handleDownloadResponses = async () => {
+    const responses = rsvpData?.rsvps || [];
+    if (!responses.length || downloadingResponses) return;
+
+    setDownloadingResponses(true);
+    setSaveMsg('');
+    try {
+      await downloadGuestResponsesPdf({
+        themeSlug: order.template?.slug,
+        coupleNames: [wd.groomName, wd.brideName].filter(Boolean).join(' & ') || 'Our Wedding',
+        responses,
+      });
+    } catch (err) {
+      setSaveMsg(err.message || 'Could not download guest responses.');
+    }
+    setDownloadingResponses(false);
   };
 
   if (loading) {
@@ -706,7 +725,15 @@ export default function Dashboard() {
 
         {/* RSVP list */}
         <div className="dash-section">
-          <h2 className="dash-section-title">Guest Responses</h2>
+          <div className="dash-section-heading">
+            <h2 className="dash-section-title">Guest Responses</h2>
+            {rsvpData?.rsvps?.length > 0 && (
+              <button type="button" className="dash-download-btn" onClick={handleDownloadResponses} disabled={downloadingResponses}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                {downloadingResponses ? 'Preparing PDF...' : 'Download PDF'}
+              </button>
+            )}
+          </div>
           {rsvpData?.rsvps?.length > 0 ? (
             <div className="rsvp-table-wrap">
               <table className="rsvp-table">

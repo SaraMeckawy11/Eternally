@@ -99,7 +99,7 @@ function drawDecor(ctx, theme) {
   }
 }
 
-function drawPageBase(ctx, theme, coupleNames) {
+function drawPageBase(ctx, theme, coupleNames, title, subtitle) {
   ctx.fillStyle = theme.background;
   ctx.fillRect(0, 0, PAGE_WIDTH, PAGE_HEIGHT);
   drawDecor(ctx, theme);
@@ -111,19 +111,19 @@ function drawPageBase(ctx, theme, coupleNames) {
 
   ctx.fillStyle = theme.accent;
   ctx.font = '700 19px Arial, sans-serif';
-  drawCenteredText(ctx, 'GUEST MESSAGES', 178);
+  drawCenteredText(ctx, title, 178);
 
   ctx.fillStyle = theme.muted;
   ctx.font = 'italic 22px Georgia, serif';
-  drawCenteredText(ctx, 'Words from the people celebrating with you', 246);
+  drawCenteredText(ctx, subtitle, 246);
 }
 
-function createPage(theme, coupleNames) {
+function createPage(theme, coupleNames, title, subtitle) {
   const canvas = document.createElement('canvas');
   canvas.width = PAGE_WIDTH;
   canvas.height = PAGE_HEIGHT;
   const ctx = canvas.getContext('2d');
-  drawPageBase(ctx, theme, coupleNames);
+  drawPageBase(ctx, theme, coupleNames, title, subtitle);
   return { canvas, ctx, y: 310 };
 }
 
@@ -202,7 +202,7 @@ function canvasToJpeg(canvas) {
   return new Promise((resolve, reject) => {
     canvas.toBlob(blob => {
       if (!blob) {
-        reject(new Error('Could not render the guest messages PDF.'));
+        reject(new Error('Could not render the PDF.'));
         return;
       }
       blob.arrayBuffer().then(buffer => resolve(new Uint8Array(buffer)), reject);
@@ -284,10 +284,27 @@ function sanitizeFilename(value) {
   return `${value || 'wedding'}`.trim().replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() || 'wedding';
 }
 
+async function downloadPages(pages, theme, filename) {
+  pages.forEach((currentPage, index) => drawFooter(currentPage, theme, index + 1, pages.length));
+  const jpegPages = await Promise.all(pages.map(currentPage => canvasToJpeg(currentPage.canvas)));
+  const pdfBytes = buildPdfFromJpegPages(jpegPages);
+  const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
 export async function downloadGuestMessagesPdf({ themeSlug, coupleNames, messages }) {
   const theme = getTheme(themeSlug);
+  const title = 'GUEST MESSAGES';
+  const subtitle = 'Words from the people celebrating with you';
   const pages = [];
-  let page = createPage(theme, coupleNames);
+  let page = createPage(theme, coupleNames, title, subtitle);
   pages.push(page);
 
   messages.forEach(message => {
@@ -303,23 +320,128 @@ export async function downloadGuestMessagesPdf({ themeSlug, coupleNames, message
       const isLastSegment = index === segments.length - 1;
       const cardHeight = 64 + (segment.length * 39) + (isLastSegment ? 64 : 24);
       if (page.y + cardHeight > PAGE_HEIGHT - 128) {
-        page = createPage(theme, coupleNames);
+        page = createPage(theme, coupleNames, title, subtitle);
         pages.push(page);
       }
       drawMessageCard(page, theme, segment, message.guestName, isLastSegment);
     });
   });
 
-  pages.forEach((currentPage, index) => drawFooter(currentPage, theme, index + 1, pages.length));
-  const jpegPages = await Promise.all(pages.map(currentPage => canvasToJpeg(currentPage.canvas)));
-  const pdfBytes = buildPdfFromJpegPages(jpegPages);
-  const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = `${sanitizeFilename(coupleNames)}-guest-messages.pdf`;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  URL.revokeObjectURL(url);
+  await downloadPages(pages, theme, `${sanitizeFilename(coupleNames)}-guest-messages.pdf`);
+}
+
+function formatResponseStatus(attending) {
+  if (attending === 'yes') return 'Attending';
+  if (attending === 'no') return 'Not attending';
+  return 'Maybe';
+}
+
+function formatResponseDate(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function getResponseDetailLines(ctx, response) {
+  const lines = [
+    `Response: ${formatResponseStatus(response.attending)}`,
+    `Guests: ${response.guestCount || 1}`,
+    response.plusOneName ? `Plus one: ${response.plusOneName}` : '',
+    response.email ? `Email: ${response.email}` : '',
+    response.phone ? `Phone: ${response.phone}` : '',
+    response.dietaryPreferences ? `Dietary notes: ${response.dietaryPreferences}` : '',
+    formatResponseDate(response.respondedAt) ? `Responded: ${formatResponseDate(response.respondedAt)}` : '',
+  ].filter(Boolean);
+  return lines.flatMap(line => wrapText(ctx, line, PAGE_WIDTH - (PAGE_MARGIN * 2) - 72));
+}
+
+function getResponseCardHeight(detailLines, messageLines) {
+  return 90 + (detailLines.length * 30) + (messageLines.length ? 48 + (messageLines.length * 34) : 0);
+}
+
+function drawResponseCard(page, theme, response, detailLines, messageLines, isContinuation) {
+  const x = PAGE_MARGIN;
+  const y = page.y;
+  const width = PAGE_WIDTH - (PAGE_MARGIN * 2);
+  const cardHeight = getResponseCardHeight(detailLines, messageLines);
+
+  page.ctx.fillStyle = theme.card;
+  page.ctx.strokeStyle = theme.soft;
+  page.ctx.lineWidth = 2;
+  page.ctx.beginPath();
+  page.ctx.roundRect(x, y, width, cardHeight, 18);
+  page.ctx.fill();
+  page.ctx.stroke();
+
+  page.ctx.textAlign = 'left';
+  page.ctx.fillStyle = theme.ink;
+  page.ctx.font = '700 29px Georgia, serif';
+  page.ctx.fillText(`${response.guestName || 'Guest'}${isContinuation ? ' (continued)' : ''}`, x + 36, y + 48);
+
+  let lineY = y + 88;
+  page.ctx.fillStyle = theme.muted;
+  page.ctx.font = '21px Arial, sans-serif';
+  detailLines.forEach(line => {
+    page.ctx.fillText(line, x + 36, lineY);
+    lineY += 30;
+  });
+
+  if (messageLines.length) {
+    lineY += 8;
+    page.ctx.fillStyle = theme.accent;
+    page.ctx.font = '700 17px Arial, sans-serif';
+    page.ctx.fillText('MESSAGE', x + 36, lineY);
+    lineY += 34;
+
+    page.ctx.fillStyle = theme.ink;
+    page.ctx.font = 'italic 23px Georgia, serif';
+    messageLines.forEach(line => {
+      page.ctx.fillText(line, x + 36, lineY);
+      lineY += 34;
+    });
+  }
+
+  page.y += cardHeight + CARD_GAP;
+}
+
+export async function downloadGuestResponsesPdf({ themeSlug, coupleNames, responses }) {
+  const theme = getTheme(themeSlug);
+  const title = 'GUEST RESPONSES';
+  const subtitle = 'A keepsake of everyone celebrating with you';
+  const pages = [];
+  let page = createPage(theme, coupleNames, title, subtitle);
+  pages.push(page);
+
+  responses.forEach(response => {
+    page.ctx.font = '21px Arial, sans-serif';
+    const detailLines = getResponseDetailLines(page.ctx, response);
+    page.ctx.font = 'italic 23px Georgia, serif';
+    const messageLines = response.message?.trim()
+      ? wrapText(page.ctx, response.message, PAGE_WIDTH - (PAGE_MARGIN * 2) - 72)
+      : [];
+    const segments = [];
+    const maxLinesPerCard = 14;
+
+    if (!messageLines.length) {
+      segments.push([]);
+    } else {
+      for (let index = 0; index < messageLines.length; index += maxLinesPerCard) {
+        segments.push(messageLines.slice(index, index + maxLinesPerCard));
+      }
+    }
+
+    segments.forEach((segment, index) => {
+      const isContinuation = index > 0;
+      const segmentDetailLines = isContinuation ? [] : detailLines;
+      const cardHeight = getResponseCardHeight(segmentDetailLines, segment);
+      if (page.y + cardHeight > PAGE_HEIGHT - 128) {
+        page = createPage(theme, coupleNames, title, subtitle);
+        pages.push(page);
+      }
+      drawResponseCard(page, theme, response, segmentDetailLines, segment, isContinuation);
+    });
+  });
+
+  await downloadPages(pages, theme, `${sanitizeFilename(coupleNames)}-guest-responses.pdf`);
 }
