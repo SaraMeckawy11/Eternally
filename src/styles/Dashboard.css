@@ -368,6 +368,33 @@
 }
 .edit-form .form-field { display: flex; flex-direction: column; gap: 6px; }
 .edit-form .form-field.full-width { grid-column: 1 / -1; }
+
+/* Enable/disable toggle for optional fields (mirrors the order flow) */
+.dash-field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.dash-field-toggle {
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  background: var(--white, #fff);
+  color: var(--text-secondary);
+  padding: 3px 12px;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.dash-field-toggle:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.edit-form .form-field.field-disabled label {
+  color: var(--text-light, #9a948a);
+}
 .edit-form .form-field label {
   font-size: 0.8rem;
   font-weight: 600;

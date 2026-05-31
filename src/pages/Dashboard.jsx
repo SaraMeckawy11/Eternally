@@ -15,6 +15,14 @@ const PHOTO_FIT_OPTIONS = [
   { value: 'contain', label: 'Fit', hint: 'Keep the whole photo visible' },
 ];
 const normalizePhotoFit = (value) => (value === 'contain' || value === 'fit' ? 'contain' : 'cover');
+// The envelope "A Note" message every design shows in its demo — used as the
+// placeholder so a blank field keeps the default note.
+const DEFAULT_ENVELOPE_MESSAGE = 'Thank you for being part of the moments that brought us here. We feel incredibly lucky to celebrate this beginning with the people we love most.';
+// Optional fields a design actually renders — matches the order flow so the
+// dashboard only offers toggles that affect the chosen invitation.
+const TEMPLATE_FIELD_SUPPORT = {
+  theater: { venueAddress: false },
+};
 
 export default function Dashboard() {
   const { editToken } = useParams();
@@ -30,6 +38,7 @@ export default function Dashboard() {
   // Edit mode
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
+  const [editDisabledFields, setEditDisabledFields] = useState([]);
   const [editPhotos, setEditPhotos] = useState({ story: [], gallery: [] });
   const [editStoryMilestones, setEditStoryMilestones] = useState([]);
   const [photoUploading, setPhotoUploading] = useState({});
@@ -66,8 +75,9 @@ export default function Dashboard() {
       venue: wd.venue || '',
       venueAddress: wd.venueAddress || '',
       venueMapUrl: wd.venueMapUrl || '',
-      message: wd.message || '',
+      coupleMessage: order.coupleMessage || '',
     });
+    setEditDisabledFields(Array.isArray(order.disabledFields) ? order.disabledFields : []);
     // Categorize existing photos. Venue photos are no longer edited separately,
     // so any legacy venue/uncategorized photos fold into the gallery.
     const allPhotos = order.photos || [];
@@ -183,6 +193,12 @@ export default function Dashboard() {
     setEditForm(prev => ({ ...prev, [key]: value }));
   };
 
+  // Optional fields can be turned on/off, mirroring the order flow.
+  const isFieldDisabled = (key) => editDisabledFields.includes(key);
+  const toggleEditField = (key) => {
+    setEditDisabledFields(prev => (prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]));
+  };
+
   const handleEditPhotoUpload = async (e, category) => {
     const files = e.target.files;
     if (!files.length) return;
@@ -230,7 +246,6 @@ export default function Dashboard() {
         venue: editForm.venue,
         venueAddress: editForm.venueAddress || undefined,
         venueMapUrl: editForm.venueMapUrl || undefined,
-        message: editForm.message || undefined,
       };
       // Include name fields if they were editable (grace period)
       if (nameEditable) {
@@ -249,6 +264,8 @@ export default function Dashboard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           weddingDetails: weddingDetailsPayload,
+          coupleMessage: editForm.coupleMessage?.trim() || '',
+          disabledFields: editDisabledFields,
           photos: flattenEditPhotos(),
           storyMilestones: cleanedMilestones,
         }),
@@ -301,6 +318,7 @@ export default function Dashboard() {
 
   const inviteUrl = `${window.location.origin}/i/${order.publicSlug}`;
   const wd = order.weddingDetails || {};
+  const venueAddressSupported = (TEMPLATE_FIELD_SUPPORT[order.template?.slug] || {}).venueAddress !== false;
 
   return (
     <div className="dash-page">
@@ -429,17 +447,56 @@ export default function Dashboard() {
                   <label>Venue Name</label>
                   <input type="text" value={editForm.venue} onChange={e => handleEditInput('venue', e.target.value)} />
                 </div>
-                <div className="form-field">
-                  <label>Venue Address</label>
-                  <input type="text" value={editForm.venueAddress} onChange={e => handleEditInput('venueAddress', e.target.value)} />
+                {venueAddressSupported && (
+                  <div className={`form-field ${isFieldDisabled('venueAddress') ? 'field-disabled' : ''}`}>
+                    <div className="dash-field-header">
+                      <label>Venue Address</label>
+                      <button type="button" className="dash-field-toggle" onClick={() => toggleEditField('venueAddress')}>
+                        {isFieldDisabled('venueAddress') ? 'Enable' : 'Disable'}
+                      </button>
+                    </div>
+                    {!isFieldDisabled('venueAddress') && (
+                      <input type="text" value={editForm.venueAddress} onChange={e => handleEditInput('venueAddress', e.target.value)} />
+                    )}
+                  </div>
+                )}
+                <div className={`form-field ${isFieldDisabled('venueMapUrl') ? 'field-disabled' : ''}`}>
+                  <div className="dash-field-header">
+                    <label>Google Maps Link</label>
+                    <button type="button" className="dash-field-toggle" onClick={() => toggleEditField('venueMapUrl')}>
+                      {isFieldDisabled('venueMapUrl') ? 'Enable' : 'Disable'}
+                    </button>
+                  </div>
+                  {!isFieldDisabled('venueMapUrl') && (
+                    <input type="url" value={editForm.venueMapUrl} onChange={e => handleEditInput('venueMapUrl', e.target.value)} />
+                  )}
                 </div>
-                <div className="form-field">
-                  <label>Google Maps Link</label>
-                  <input type="url" value={editForm.venueMapUrl} onChange={e => handleEditInput('venueMapUrl', e.target.value)} />
+                <div className={`form-field full-width ${isFieldDisabled('coupleMessage') ? 'field-disabled' : ''}`}>
+                  <div className="dash-field-header">
+                    <label>Envelope Message</label>
+                    <button type="button" className="dash-field-toggle" onClick={() => toggleEditField('coupleMessage')}>
+                      {isFieldDisabled('coupleMessage') ? 'Enable' : 'Disable'}
+                    </button>
+                  </div>
+                  {!isFieldDisabled('coupleMessage') && (
+                    <>
+                      <textarea rows={4} value={editForm.coupleMessage} placeholder={DEFAULT_ENVELOPE_MESSAGE} onChange={e => handleEditInput('coupleMessage', e.target.value)} />
+                      <p className="form-hint">Shown inside the envelope. Leave blank to keep the demo note.</p>
+                    </>
+                  )}
                 </div>
-                <div className="form-field full-width">
-                  <label>Personal Message</label>
-                  <textarea rows={3} value={editForm.message} onChange={e => handleEditInput('message', e.target.value)} />
+                <div className={`form-field full-width ${isFieldDisabled('rsvp') ? 'field-disabled' : ''}`}>
+                  <div className="dash-field-header">
+                    <label>RSVP Section</label>
+                    <button type="button" className="dash-field-toggle" onClick={() => toggleEditField('rsvp')}>
+                      {isFieldDisabled('rsvp') ? 'Enable' : 'Disable'}
+                    </button>
+                  </div>
+                  <p className="form-hint" style={{ margin: 0 }}>
+                    {isFieldDisabled('rsvp')
+                      ? 'Guests won’t see an RSVP form on your invitation.'
+                      : 'Guests can RSVP directly from your invitation.'}
+                  </p>
                 </div>
               </div>
 

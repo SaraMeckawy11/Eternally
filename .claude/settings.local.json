@@ -37,7 +37,17 @@
       "Bash(grep -nA12 \"^\\\\.fountain-splash \\\\{\" fountain-reverie-shared/fountain-reverie.css)",
       "Bash(grep -nA10 \"splash-screen\\\\|bp-splash\\\\|boarding-splash\" boarding-pass/boarding-pass.css)",
       "Bash(grep -rnA10 \"^\\\\.inv-splash \\\\{\" .)",
-      "Bash(git log *)"
+      "Bash(git log *)",
+      "Bash(npx vite *)",
+      "Bash(sed -n '515,540p' src/invitations/coastal-breeze/CoastalBreezeInvitation.jsx)",
+      "Bash(sed -n '505,530p' src/invitations/gazebo-garden/GazeboGardenInvitation.jsx)",
+      "Bash(sed -n '490,515p' src/invitations/fountain-reverie-shared/FountainReverieInvitation.jsx)",
+      "Bash(sed -n '115,118p' src/invitations/fountain-reverie-shared/FountainReverieInvitation.jsx)",
+      "Bash(sed -n '82,84p' src/invitations/theater/TheaterInvitation.jsx)",
+      "Bash(timeout 8 node server.js)",
+      "Bash(npm install *)",
+      "Bash(cd /c/Sara/Veloura/src && grep -rni \"memories\\\\|memory\\\\|marquee\\\\|gallery.*loop\\\\|infinite\\\\|animation.*gallery\\\\|reel\" invitations/ --include=*.jsx -l | head; echo \"=== css animations gallery ===\"; grep -rni \"memories\\\\|reel\\\\|marquee\\\\|infinite\\\\|@keyframes\" invitations/coastal-breeze/coastal-breeze.css | head -20)",
+      "Bash(echo \"exit: $?\")"
     ]
   }
 }

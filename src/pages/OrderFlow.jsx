@@ -920,7 +920,7 @@ export default function OrderFlow() {
                               placeholder={TEMPLATE_DEMO_ENVELOPE_MESSAGE[selectedTemplate?.slug] || DEFAULT_ENVELOPE_MESSAGE}
                             />
                             <p className="form-hint message-hint">
-                              The longer note revealed inside the envelope. Leave blank to use the message shown in the demo.
+                              Shown inside the envelope. Leave blank to keep the demo note.
                             </p>
                           </>
                         ) : (
