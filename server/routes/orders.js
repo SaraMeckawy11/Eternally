@@ -32,6 +32,16 @@ function normalizeDisabledFields(fields) {
   return Array.isArray(fields) ? [...new Set(fields.filter(Boolean))] : [];
 }
 
+function normalizePhotoFit(value) {
+  return value === 'contain' || value === 'containFit' || value === 'fit' ? 'contain' : 'cover';
+}
+
+function normalizePhotos(photos) {
+  return Array.isArray(photos)
+    ? photos.map(photo => ({ ...photo, fit: normalizePhotoFit(photo?.fit) }))
+    : [];
+}
+
 function applyDisabledFields(weddingDetails = {}, disabledFields = []) {
   const cleaned = { ...weddingDetails };
   for (const field of disabledFields) {
@@ -100,7 +110,7 @@ router.post('/', validateOrderBody, async (req, res) => {
       customizations: customizations || {},
       disabledFields,
       colorOverrides: colorOverrides || {},
-      photos: photos || [],
+      photos: normalizePhotos(photos),
       musicUrl,
       musicPublicId,
       musicEnabled: musicEnabled !== undefined ? musicEnabled : Boolean(musicUrl),
@@ -432,7 +442,7 @@ router.put('/edit/:editToken', validateEditToken, async (req, res) => {
     }
     if (req.body.disabledFields !== undefined) { order.disabledFields = disabledFields; fieldsChanged.push('disabledFields'); }
     if (colorOverrides) { order.colorOverrides = { ...order.colorOverrides, ...colorOverrides }; fieldsChanged.push('colorOverrides'); }
-    if (photos) { order.photos = photos; fieldsChanged.push('photos'); }
+    if (photos) { order.photos = normalizePhotos(photos); fieldsChanged.push('photos'); }
     if (storyMilestones) { order.storyMilestones = storyMilestones; fieldsChanged.push('storyMilestones'); }
     if (coupleMessage !== undefined) { order.coupleMessage = coupleMessage; fieldsChanged.push('coupleMessage'); }
     if (musicUrl !== undefined) { order.musicUrl = musicUrl; fieldsChanged.push('musicUrl'); }

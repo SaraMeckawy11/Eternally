@@ -4,17 +4,21 @@ import '../styles/Dashboard.css';
 
 const API = import.meta.env.VITE_API_URL || '/api';
 const PHOTO_CATEGORIES = {
+  venue: { label: 'Venue Photos', max: 2 },
   story: { label: 'Our Story Photos', max: 4 },
   gallery: { label: 'Gallery Photos', max: 6 },
 };
 const NON_STORY_CATEGORIES = [
+  { key: 'venue', label: 'Venue Photos', max: 2 },
   { key: 'gallery', label: 'Gallery Photos', max: 6 },
 ];
 const PHOTO_FIT_OPTIONS = [
   { value: 'cover', label: 'Fill', hint: 'Fill the frame' },
   { value: 'contain', label: 'Fit', hint: 'Keep the whole photo visible' },
 ];
-const normalizePhotoFit = (value) => (value === 'contain' || value === 'fit' ? 'contain' : 'cover');
+const normalizePhotoFit = (value) => (
+  value === 'contain' || value === 'containFit' || value === 'fit' ? 'contain' : 'cover'
+);
 // The envelope "A Note" message every design shows in its demo — used as the
 // placeholder so a blank field keeps the default note.
 const DEFAULT_ENVELOPE_MESSAGE = 'Thank you for being part of the moments that brought us here. We feel incredibly lucky to celebrate this beginning with the people we love most.';
@@ -39,7 +43,7 @@ export default function Dashboard() {
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
   const [editDisabledFields, setEditDisabledFields] = useState([]);
-  const [editPhotos, setEditPhotos] = useState({ story: [], gallery: [] });
+  const [editPhotos, setEditPhotos] = useState({ venue: [], story: [], gallery: [] });
   const [editStoryMilestones, setEditStoryMilestones] = useState([]);
   const [photoUploading, setPhotoUploading] = useState({});
   const [saving, setSaving] = useState(false);
@@ -78,10 +82,9 @@ export default function Dashboard() {
       coupleMessage: order.coupleMessage || '',
     });
     setEditDisabledFields(Array.isArray(order.disabledFields) ? order.disabledFields : []);
-    // Categorize existing photos. Venue photos are no longer edited separately,
-    // so any legacy venue/uncategorized photos fold into the gallery.
+    // Keep each photo category aligned with the section it renders in.
     const allPhotos = order.photos || [];
-    const categorized = { story: [], gallery: [] };
+    const categorized = { venue: [], story: [], gallery: [] };
     allPhotos.forEach(p => {
       const cat = p.label && categorized[p.label] ? p.label : 'gallery';
       categorized[cat].push({ ...p, fit: normalizePhotoFit(p.fit) });

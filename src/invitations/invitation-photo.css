@@ -59,26 +59,21 @@
   padding: 0;
   box-sizing: border-box;
   filter: drop-shadow(0 16px 30px var(--invitation-photo-shadow));
-  transform: scale(var(--invitation-photo-scale));
-  transform-origin: center;
-  transition: transform 0.45s ease;
-  will-change: transform;
+}
+
+.invitation-photo[data-fit='cover'] .invitation-photo__img {
+  object-fit: cover;
 }
 
 .invitation-photo[data-fit='contain'] .invitation-photo__img,
 .invitation-photo[data-fit='containFit'] .invitation-photo__img {
   object-fit: contain;
-  padding: calc(var(--invitation-photo-pad) * 0.4);
   /* No zoom in contain mode — the whole photo must stay visible exactly. */
   transform: none;
 }
 
 .invitation-photo:hover .invitation-photo__backdrop-image {
   transform: scale(1.14);
-}
-
-.invitation-photo:hover .invitation-photo__img {
-  transform: scale(var(--invitation-photo-hover-scale));
 }
 
 .invitation-photo[data-fit='contain']:hover .invitation-photo__img,

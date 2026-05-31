@@ -947,7 +947,20 @@ export default function OrderFlow() {
                   )}
                   {photos.venue.map((photo, i) => (
                     <div key={photo._localId || i} className={`photo-preview ${photo._failed ? 'photo-failed' : ''}`}>
-                      <img src={photo.url} alt={`Venue ${i + 1}`} onError={handleImgError} />
+                      <InvitationPhoto src={photo} alt={`Venue ${i + 1}`} />
+                      <div className="photo-fit-controls" role="group" aria-label={`Venue photo ${i + 1} fit`}>
+                        {PHOTO_FIT_OPTIONS.map(option => (
+                          <button
+                            key={option.value}
+                            type="button"
+                            className={`photo-fit-btn ${(photo.fit || DEFAULT_PHOTO_FIT) === option.value ? 'active' : ''}`}
+                            onClick={() => setPhotoFit('venue', i, option.value)}
+                            title={option.hint}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
                       {photo._uploading && <div className="photo-upload-badge" title="Uploading…" />}
                       {photo._failed && <div className="photo-failed-badge" title="Upload failed — remove and re-add">!</div>}
                       <button type="button" className="photo-remove" onClick={() => removePhoto('venue', i)}>

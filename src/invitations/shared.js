@@ -23,7 +23,14 @@ export function getInvitationPhotoSrc(source) {
 
 export function containInvitationPhoto(source) {
   const resolved = resolveInvitationPhoto(source);
-  return resolved.src ? { src: resolved.src, fit: 'contain' } : source;
+  if (!resolved.src) return source;
+
+  // Story layouts historically defaulted to contain. Preserve that fallback
+  // for plain image URLs, but never override an explicit customer selection.
+  return {
+    src: resolved.src,
+    fit: typeof source === 'object' && source?.fit ? resolved.fit : 'contain',
+  };
 }
 
 export function formatInvitationTime(value) {
