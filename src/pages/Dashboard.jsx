@@ -746,7 +746,6 @@ export default function Dashboard() {
                     <th>Guest Name</th>
                     <th>Status</th>
                     <th>Guests</th>
-                    <th>Message</th>
                     <th>Date</th>
                   </tr>
                 </thead>
@@ -763,7 +762,6 @@ export default function Dashboard() {
                         </span>
                       </td>
                       <td>{r.guestCount}</td>
-                      <td className="rsvp-msg">{r.message || '—'}</td>
                       <td className="rsvp-date">{new Date(r.respondedAt).toLocaleDateString()}</td>
                     </tr>
                   ))}

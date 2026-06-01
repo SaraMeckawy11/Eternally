@@ -280,7 +280,6 @@
 .rsvp-no { background: var(--rose-soft); color: var(--rose); }
 .rsvp-maybe { background: #FEF3C7; color: #D97706; }
 
-.rsvp-msg { max-width: 200px; }
 .rsvp-date { white-space: nowrap; font-size: 0.82rem; }
 
 .rsvp-empty {

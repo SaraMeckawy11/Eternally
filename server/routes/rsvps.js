@@ -60,10 +60,12 @@ router.get('/dashboard/:editToken', async (req, res) => {
 
     const rsvps = await Rsvp.find({ order: order._id }).sort({ respondedAt: -1 });
 
+    const attending = rsvps.filter(r => r.attending === 'yes').length;
+    const notAttending = rsvps.filter(r => r.attending === 'no').length;
     const summary = {
-      attending: rsvps.filter(r => r.attending === 'yes').length,
-      notAttending: rsvps.filter(r => r.attending === 'no').length,
-      totalResponses: rsvps.length,
+      attending,
+      notAttending,
+      totalResponses: attending + notAttending,
       totalGuests: rsvps
         .filter(r => r.attending === 'yes')
         .reduce((sum, r) => sum + r.guestCount, 0),
