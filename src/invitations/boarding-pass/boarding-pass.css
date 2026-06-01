@@ -717,27 +717,15 @@
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  background: linear-gradient(180deg, var(--bp-blush), var(--bp-card));
 }
-.inv-gallery-item::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 11;
-  border-radius: inherit;
-  box-shadow:
-    inset 0 0 0 3px var(--bp-champagne),
-    inset 0 0 0 5px hsla(38, 55%, 58%, 0.15);
-  pointer-events: none;
+.inv-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
-.inv-gallery-item > .invitation-photo {
-  --invitation-photo-pad: 0.3rem;
-  --invitation-photo-scale: 1.1;
-  --invitation-photo-hover-scale: 1.14;
-  --invitation-photo-surface: linear-gradient(180deg, var(--bp-blush), var(--bp-card));
-  --invitation-photo-overlay-top: rgba(251, 239, 231, 0.12);
-  --invitation-photo-overlay-bottom: rgba(246, 238, 228, 0.46);
-  --invitation-photo-shadow: rgba(46, 22, 28, 0.22);
+.inv-gallery-item:hover img {
+  transform: scale(1.05);
 }
 /* Window blind overlay — blush */
 .inv-gallery-blind {

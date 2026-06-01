@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import cloudsHero from '../../assets/clouds-hero.jpg';
 import BoardingPassSplash from './BoardingPassSplash';
-import { containInvitationPhoto, createRsvpSubmissionId, DEFAULT_COUPLE_MESSAGE, formatInvitationTime } from '../shared';
+import { containInvitationPhoto, createRsvpSubmissionId, DEFAULT_COUPLE_MESSAGE, formatInvitationTime, getInvitationPhotoSrc } from '../shared';
 import InvitationPhoto from '../InvitationPhoto';
 import './boarding-pass.css';
 import boardingPassEnvelope from '../../assets/boardingPass/boarding-pass-envelope-transparent.png';
@@ -546,7 +546,7 @@ export default function BoardingPassInvitation({ order, demo = false, publicSlug
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <InvitationPhoto src={src} alt={`Gallery ${i + 1}`} sizes="(max-width: 768px) 45vw, 260px" loading="eager" fetchPriority={i < 3 ? 'high' : 'auto'} />
+                <img src={getInvitationPhotoSrc(src)} alt={`Gallery ${i + 1}`} />
                 <div className="inv-gallery-blind">
                   <span>Memories</span><span className="inv-blind-ornament">✦</span>
                 </div>
@@ -575,7 +575,7 @@ export default function BoardingPassInvitation({ order, demo = false, publicSlug
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <InvitationPhoto src={p} alt={`Gallery ${i + 1}`} sizes="(max-width: 768px) 45vw, 260px" loading="eager" fetchPriority={i < 3 ? 'high' : 'auto'} />
+                <img src={getInvitationPhotoSrc(p)} alt={`Gallery ${i + 1}`} />
                 <div className="inv-gallery-blind">
                   <span>Memories</span><span className="inv-blind-ornament">✦</span>
                 </div>
